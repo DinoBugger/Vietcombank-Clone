@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap CSS 5.3 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome (CDNJS) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- RESET CSS-->
+    <link rel="stylesheet" href="./asset/styles/reset.css" />
+    <style>
+      /* Color code */
+      :root {
+        --vcb-primary-green: #00a651;
+        --vcb-light-green: #b5d334;
+        --vcb-deep-green: #00703c;
+        --vcb-neutral-white: #ffffff;
+        --vcb-soft-grey: #f3f4f6;
+        --vcb-text-black: #111827;
+      }
+
+      /* text style */
+
+      .body-large {
+        font-size: 18px;
+        line-height: 1.5;
+        font-weight: 400;
+      }
+
+      .body-medium {
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 400;
+      }
+
+      .body-small {
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 400;
+      }
+
+      .button-large {
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 600;
+      }
+
+      .numeric-display {
+        font-size: 20px;
+        line-height: 1;
+        font-weight: 700;
+      }
+
+      .input-text {
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 400;
+      }
+
+      .super-large {
+        font-size: 30px;
+        line-height: normal;
+        font-weight: 800;
+      }
+
+      .hero-section {
+        font-size: 48px;
+        line-height: 1.2;
+        font-weight: 700;
+      }
+
+      .section-title {
+        font-size: 32px;
+        line-height: 1.3;
+        font-weight: 700;
+      }
+
+      .card-title {
+        font-size: 24px;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+
+      body {
+        background-image: url("asset/images/vcb-digibank-background.jpg");
+        background-repeat: no-repeat; /* Không lặp lại ảnh */
+        background-size: cover; /* Ảnh phủ kín toàn bộ màn hình */
+        background-position: center; /* Căn giữa ảnh */
+        background-attachment: fixed; /* Ảnh đứng yên khi cuộn trang */
+        min-height: 100vh;
+        font-family: "Inter", sans-serif;
+      }
+      /* Tùy chỉnh nhỏ cho Logo và Button không có sẵn trong BS5 */
+      .main-logo img {
+        width: 200px;
+        height: auto;
+      }
+      .btn-vcb {
+        background-color: var(--vcb-deep-green);
+        color: white;
+        border-radius: 10px;
+        padding: 5px 15px;
+        display: inline-block;
+      }
+      .text-vcb {
+        color: var(--vcb-deep-green);
+      }
+
+      .large-button {
+        width: 100%;
+        color: var(--vcb-neutral-white);
+        background-color: var(--vcb-deep-green);
+      }
+
+      .large-button:hover {
+        background-color: var(--vcb-light-green) !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container min-vh-100 d-flex flex-column">
+      <div class="header d-flex justify-content-between align-items-center pt-5 mb-5">
+        <div class="main-logo">
+          <a href="index.html"><img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank Logo" /></a>
+        </div>
+        <div class="contact text-vcb d-flex flex-column align-items-end">
+          <p class="body-large mb-1">Liên hệ hỗ trợ</p>
+          <p class="btn-vcb m-0">1900545413</p>
+        </div>
+      </div>
+      <div class="row flex-grow-1 justify-content-center">
+        <div class="col-12 col-md-6 col-xl-4 text-center">
+          <div class="content p-4">
+            <p class="super-large mb-2">VCB-Digitalbank</p>
+            <p class="body-small text-secondary">Xin kính chào quý khách</p>
+          </div>
+          <p class="super-large mb-5">Thông tin đăng kí</p>
+          <form class="text-start" id="signupForm" novalidate>
+            <div class="mb-3">
+              <label for="fullname" class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Số điện t hoại (10 số)</label>
+              <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại" pattern="[0-9]{10}" maxlength="10" required />
+              <small class="text-danger d-none" id="phoneError">Số điện thoại phải có đúng 10 số</small>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Mật khẩu (ít nhất 6 kí tự)</label>
+              <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" minlength="6" required />
+              <small class="text-danger d-none" id="passwordError">Mật khẩu phải có ít nhất 6 kí tự</small>
+            </div>
+            <div class="mb-3">
+              <label for="pin" class="form-label">Mã PIN (6 số)</label>
+              <input type="text" class="form-control" id="pin" placeholder="Nhập mã pin" pattern="[0-9]{6}" maxlength="6" required />
+              <small class="text-danger d-none" id="pinError">Mã PIN phải có đúng 6 số</small>
+            </div>
+            <button type="submit" class="btn large-button rounded-3">Đăng kí</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const form = document.getElementById("signupForm");
+      const fullnameInput = document.getElementById("fullname");
+      const phoneInput = document.getElementById("phone");
+      const passwordInput = document.getElementById("password");
+      const pinInput = document.getElementById("pin");
+      const phoneError = document.getElementById("phoneError");
+      const passwordError = document.getElementById("passwordError");
+      const pinError = document.getElementById("pinError");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        phoneError.classList.add("d-none");
+        passwordError.classList.add("d-none");
+        pinError.classList.add("d-none");
+
+        let isValid = true;
+
+        if (!/^\d{10}$/.test(phoneInput.value)) {
+          phoneError.classList.remove("d-none");
+          isValid = false;
+        }
+
+        if (passwordInput.value.length < 6) {
+          passwordError.classList.remove("d-none");
+          isValid = false;
+        }
+
+        if (!/^\d{6}$/.test(pinInput.value)) {
+          pinError.classList.remove("d-none");
+          isValid = false;
+        }
+
+        if (isValid) {
+          let users = JSON.parse(localStorage.getItem("userinfo") || "[]");
+
+          // Create new user object
+          const newUser = {
+            id: Date.now(),
+            fullname: fullnameInput.value,
+            phone: phoneInput.value,
+            password: passwordInput.value,
+            pin: pinInput.value,
+            createdAt: new Date().toISOString(),
+          };
+
+          // Add new user
+          users.push(newUser);
+
+          // Save to localStorage
+          localStorage.setItem("userinfo", JSON.stringify(users, null, 2));
+
+          alert("Đăng kí thành công! Chuyển hướng tới trang đăng nhập...");
+          // Redirect to login page
+          window.location.href = "./login.html";
+        }
+      });
+    </script>
+  </body>
+</html>
