@@ -1,9 +1,365 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang chủ</title>
+    <title>Vietcombank - Trang chủ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./asset/styles/reset.css" />
+
+    <style>
+      :root {
+        --vcb-green: #00a651;
+        --vcb-green-dark: #00703c;
+        --vcb-green-soft: #d9f3e5;
+        --vcb-pink-soft: rgba(255, 238, 241, 0.92);
+        --vcb-text: #10261a;
+      }
+
+      body {
+        min-height: 100vh;
+        color: var(--vcb-text);
+        font-family: "Inter", sans-serif;
+        background: url("./asset/images/vcb-background.webp") center / cover fixed no-repeat;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .topbar {
+        background: rgba(255, 255, 255, 0.84);
+        backdrop-filter: blur(2px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .topbar .hotline {
+        font-weight: 700;
+      }
+
+      .topbar .fx-item {
+        font-weight: 700;
+      }
+
+      .main-nav {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .brand img {
+        width: 180px;
+        height: auto;
+      }
+
+      .nav-link {
+        color: #101010;
+        font-weight: 600;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus {
+        color: var(--vcb-green-dark);
+      }
+
+      .btn-vcb {
+        min-width: 128px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .btn-signup {
+        color: #fff;
+        border: none;
+        background-color: var(--vcb-green);
+      }
+
+      .btn-signup:hover {
+        background-color: var(--vcb-green-dark);
+        color: #fff;
+      }
+
+      .btn-login {
+        color: #4d2626;
+        border: none;
+        background-color: #ffe8e8;
+      }
+
+      .btn-login:hover {
+        background-color: #f9d7d7;
+      }
+
+      .account-box {
+        display: none;
+        text-align: center;
+        font-size: 1.03rem;
+        font-weight: 700;
+        border-radius: 0;
+        background: rgba(200, 223, 45, 0.82);
+      }
+
+      .hero {
+        border-radius: 14px;
+        padding: 2.2rem;
+        margin-top: 1.5rem;
+        background: var(--vcb-pink-soft);
+      }
+
+      .hero h1 {
+        color: var(--vcb-green-dark);
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        font-weight: 800;
+      }
+
+      .hero p {
+        margin-top: 0.8rem;
+        margin-bottom: 1.4rem;
+        font-size: 1.06rem;
+        line-height: 1.6;
+      }
+
+      .hero-cta {
+        border: none;
+        border-radius: 0.6rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #fff;
+        background: var(--vcb-green);
+      }
+
+      .hero-cta:hover {
+        background: var(--vcb-green-dark);
+        color: #fff;
+      }
+
+      .hero-visual {
+        border-radius: 12px;
+        object-fit: cover;
+        max-height: 320px;
+        width: 100%;
+      }
+
+      .service-title {
+        margin: 2rem 0 1.5rem;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-size: clamp(1.5rem, 2.6vw, 2rem);
+        font-weight: 800;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .service-card {
+        min-height: 108px;
+        border-radius: 14px;
+        color: #fff;
+        background: rgba(0, 112, 60, 0.92);
+      }
+
+      .service-card i {
+        font-size: 1.3rem;
+      }
+
+      .service-card h3 {
+        margin-top: 0.45rem;
+        font-size: 1.95rem;
+        font-weight: 800;
+      }
+
+      .active-lang {
+        background-color: var(--vcb-green);
+        padding: 10px 20px;
+        border-radius: 5px;
+      }
+
+      .gapping {
+        gap: 5px;
+      }
+
+      .hero {
+        background: url("./asset/images/vcb-banner.webp") right / cover fixed no-repeat;
+      }
+    </style>
   </head>
-  <body></body>
+
+  <body>
+    <main class="container">
+      <header>
+        <div class="topbar px-2 px-sm-3 py-2 d-flex align-items-center justify-content-between gap-2">
+          <div class="hotline d-flex align-items-center gap-2">
+            <i class="fa-solid fa-phone"></i>
+            <span>Hotline: 1900 545413</span>
+          </div>
+          <div class="fx-group d-flex align-items-center gap-2 gap-sm-3">
+            <span class="fx-item">Tỷ giá</span>
+            <span class="fx-item active-lang">VI</span>
+            <span class="fx-item">ENG</span>
+          </div>
+        </div>
+
+        <nav class="navbar navbar-expand-md main-nav px-2 px-sm-3 py-2 mt-1">
+          <div class="container-fluid p-0">
+            <a class="navbar-brand brand me-2" href="./index.html">
+              <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" />
+            </a>
+
+            <button
+              class="navbar-toggler border-0 shadow-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mainNavbar"
+              aria-controls="mainNavbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="fa-solid fa-bars fs-3"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+              <ul class="navbar-nav mx-auto mb-2 mb-md-0 gapping">
+                <li class="nav-item"><a class="nav-link" href="#">Tài khoản</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Thẻ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tin tức</a></li>
+                <li class="nav-item"><a class="nav-link" href="./contact.html">Liên hệ</a></li>
+              </ul>
+              <!-- // Chỗ này phải dùng style để gán d-flex do d-flex của bootstrap có !important -->
+              <div id="authActions" class="auth-actions align-items-center justify-content-center gap-2" style="display: flex">
+                <a class="btn btn-vcb btn-signup" href="./signup.html">Đăng kí</a>
+                <a class="btn btn-vcb btn-login" href="./login.html">Đăng nhập</a>
+              </div>
+            </div>
+
+            <div id="accountBox" class="account-box p-2 p-lg-3 ms-md-2">
+              <div id="accountName"></div>
+              <div id="accountBalance" class="mt-1"></div>
+              <button id="logoutBtn" class="btn btn-vcb btn-login mt-2">Đăng xuất</button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="hero row align-items-center g-3 g-md-4">
+        <div class="col-12 col-md-6">
+          <h1>Ngân hàng số thế hệ mới</h1>
+          <p>Mở tài khoản Vietcombank trực tuyến 24/7, chuyển và nhận tiền dễ dàng, nhanh chóng.</p>
+          <a href="./signup.html" class="btn hero-cta">Mở tài khoản ngay <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+      </section>
+
+      <h2 class="service-title">Dịch Vụ Nổi Bật</h2>
+
+      <section class="row g-3 pb-2 pb-md-4">
+        <div class="col-12 col-lg-3">
+          <a href="deposit.html">
+            <div class="service-card d-flex flex-column justify-content-center align-items-center">
+              <i class="fa-solid fa-money-bill-transfer"></i>
+              <h3>Nạp Tiền</h3>
+            </div>
+          </a>
+        </div>
+        <div class="col-12 col-lg-3">
+          <div class="service-card d-flex flex-column justify-content-center align-items-center">
+            <i class="fa-solid fa-right-left"></i>
+            <h3>Chuyển Tiền</h3>
+          </div>
+        </div>
+        <div class="col-12 col-lg-3">
+          <div class="service-card d-flex flex-column justify-content-center align-items-center">
+            <i class="fa-regular fa-credit-card"></i>
+            <h3>Mở Thẻ Vật Lý</h3>
+          </div>
+        </div>
+        <div class="col-12 col-lg-3">
+          <a href="./contact.html">
+            <div class="service-card d-flex flex-column justify-content-center align-items-center">
+              <i class="fa-solid fa-headset"></i>
+              <h3>Tư Vấn</h3>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const accountBox = document.getElementById("accountBox");
+      const accountName = document.getElementById("accountName");
+      const accountBalance = document.getElementById("accountBalance");
+      const authActions = document.getElementById("authActions");
+
+      function formatBalance(rawBalance) {
+        const numeric = Number(rawBalance);
+        if (Number.isFinite(numeric)) {
+          return `${numeric} vnd`;
+        }
+        return "0 vnd";
+      }
+
+      function getCurrentUser() {
+        let currentUser = null;
+
+        try {
+          currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+        } catch (error) {
+          currentUser = null;
+        }
+
+        if (!currentUser) {
+          return null;
+        }
+
+        try {
+          const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
+          const freshUser = users.find((user) => user.id === currentUser.id || user.phone === currentUser.phone);
+
+          if (freshUser) {
+            localStorage.setItem("currentUser", JSON.stringify(freshUser));
+            return freshUser;
+          }
+        } catch (error) {
+          return currentUser;
+        }
+
+        return currentUser;
+      }
+
+      function renderHeaderByAuth() {
+        const currentUser = getCurrentUser();
+
+        if (!currentUser) {
+          authActions.style.display = "flex";
+          accountBox.style.display = "none";
+          return;
+        }
+
+        const fullname = currentUser.fullname || "Khách hàng";
+
+        accountName.textContent = `Khách hàng: ${fullname}`;
+        accountBalance.textContent = `Số dư: ${formatBalance(currentUser.balance)}`;
+
+        authActions.style.display = "none";
+        accountBox.style.display = "block";
+      }
+
+      renderHeaderByAuth();
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("currentUser");
+          renderHeaderByAuth();
+        });
+      }
+    </script>
+  </body>
 </html>
