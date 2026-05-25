@@ -170,6 +170,11 @@
               <input type="text" class="form-control" id="pin" placeholder="Nhập mã pin" pattern="[0-9]{6}" maxlength="6" required />
               <small class="text-danger d-none" id="pinError">Mã PIN phải có đúng 6 số</small>
             </div>
+            <div class="mb-3">
+              <label for="accountNumber" class="form-label">Số tài khoản (ít nhất 8 số)</label>
+              <input type="text" class="form-control" id="accountNumber" placeholder="Nhập số tài khoản" pattern="[0-9]{8,}" maxlength="20" required />
+              <small class="text-danger d-none" id="accountError">Số tài khoản phải có ít nhất 8 chữ số</small>
+            </div>
             <button type="submit" class="btn large-button rounded-3">Đăng kí</button>
           </form>
         </div>
@@ -183,9 +188,11 @@
       const phoneInput = document.getElementById("phone");
       const passwordInput = document.getElementById("password");
       const pinInput = document.getElementById("pin");
+      const accountInput = document.getElementById("accountNumber");
       const phoneError = document.getElementById("phoneError");
       const passwordError = document.getElementById("passwordError");
       const pinError = document.getElementById("pinError");
+      const accountError = document.getElementById("accountError");
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -193,6 +200,7 @@
         phoneError.classList.add("d-none");
         passwordError.classList.add("d-none");
         pinError.classList.add("d-none");
+        accountError.classList.add("d-none");
 
         let isValid = true;
 
@@ -211,6 +219,11 @@
           isValid = false;
         }
 
+        if (!/^\d{8,}$/.test(accountInput.value)) {
+          accountError.classList.remove("d-none");
+          isValid = false;
+        }
+
         if (isValid) {
           let users = JSON.parse(localStorage.getItem("userinfo") || "[]");
 
@@ -221,6 +234,7 @@
             phone: phoneInput.value,
             password: passwordInput.value,
             pin: pinInput.value,
+            accountNumber: accountInput.value,
             balance: 0,
             createdAt: new Date().toISOString(),
           };
