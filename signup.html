@@ -95,6 +95,11 @@
         font-weight: 600;
       }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
       body {
         background-image: url("asset/images/vcb-digibank-background.jpg");
         background-repeat: no-repeat; /* Không lặp lại ảnh */
@@ -129,6 +134,14 @@
       .large-button:hover {
         background-color: var(--vcb-light-green) !important;
       }
+      .login-link {
+        display: flex;
+        justify-content: end;
+      }
+
+      .login-link:hover {
+        color: var(--vcb-primary-green);
+      }
     </style>
   </head>
 
@@ -149,7 +162,7 @@
             <p class="super-large mb-2">VCB-Digitalbank</p>
             <p class="body-small text-secondary">Xin kính chào quý khách</p>
           </div>
-          <p class="super-large mb-5">Thông tin đăng kí</p>
+          <p class="super-large mb-2">Thông tin đăng kí</p>
           <form class="text-start" id="signupForm" novalidate>
             <div class="mb-3">
               <label for="fullname" class="form-label">Họ và tên</label>
@@ -177,7 +190,7 @@
               <input type="text" class="form-control" id="pin" placeholder="Nhập mã pin" pattern="[0-9]{6}" maxlength="6" required />
               <small class="text-danger d-none" id="pinError">Mã PIN phải có đúng 6 số</small>
             </div>
-
+            <div class="login-link mb-3"><a href="login.html">Chưa có tài khoản ?</a></div>
             <button type="submit" class="btn large-button rounded-3">Đăng kí</button>
           </form>
         </div>
