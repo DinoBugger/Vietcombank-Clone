@@ -95,6 +95,12 @@
         font-weight: 600;
       }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+      }
+
       body {
         background-image: url("asset/images/vcb-digibank-background.jpg");
         background-repeat: no-repeat; /* Không lặp lại ảnh */
@@ -129,6 +135,14 @@
       .large-button:hover {
         background-color: var(--vcb-light-green) !important;
       }
+      .register-link {
+        display: flex;
+        justify-content: end;
+      }
+
+      .register-link:hover {
+        color: var(--vcb-primary-green);
+      }
     </style>
   </head>
 
@@ -161,7 +175,8 @@
               <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" minlength="6" required />
               <small class="text-danger d-none" id="passwordError">Mật khẩu phải có ít nhất 6 kí tự</small>
             </div>
-            <button type="submit" class="btn large-button rounded-3">Đăng nhập</button>
+            <div class="register-link mb-3"><a>Chưa có tài khoản ?</a></div>
+            <div><button type="submit" class="btn large-button rounded-3">Đăng nhập</button></div>
           </form>
         </div>
       </div>
