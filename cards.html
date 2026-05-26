@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vietcombank - Danh sách thẻ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./asset/styles/reset.css" />
+
+    <style>
+      :root {
+        --vcb-green: #00a651;
+        --vcb-green-dark: #00703c;
+        --vcb-green-soft: rgba(217, 243, 229, 0.92);
+        --vcb-text: #10261a;
+        --vcb-card-shadow: 0 18px 45px rgba(16, 38, 26, 0.14);
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Inter", sans-serif;
+        color: var(--vcb-text);
+        background: url("./asset/images/vcb-background.webp") center / cover fixed no-repeat;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .page-shell {
+        min-height: 100vh;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.18));
+        backdrop-filter: blur(1px);
+      }
+
+      .topbar {
+        background: rgba(255, 255, 255, 0.86);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .brand img {
+        width: 180px;
+        max-width: 100%;
+      }
+
+      .btn-vcb {
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .btn-vcb-primary {
+        border: none;
+        color: #fff;
+        background: var(--vcb-green);
+      }
+
+      .btn-vcb-primary:hover {
+        color: #fff;
+        background: var(--vcb-green-dark);
+      }
+
+      .btn-vcb-soft {
+        border: none;
+        color: #4d2626;
+        background: #ffe8e8;
+      }
+
+      .btn-vcb-soft:hover {
+        background: #f9d7d7;
+      }
+
+      .btn-home-pill {
+        padding: 0.55rem 1.2rem;
+        border: 1.5px solid #86c9b0;
+        border-radius: 999px;
+        color: var(--vcb-green-dark);
+        background: #fff;
+        font-size: 1.1rem;
+        font-weight: 800;
+        line-height: 1.1;
+        box-shadow: none;
+      }
+
+      .btn-home-pill:hover {
+        color: var(--vcb-green-dark);
+        background: #f7fffb;
+        border-color: #5bb394;
+      }
+
+      .search-panel {
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 24px;
+        background: linear-gradient(135deg, var(--vcb-green-soft), rgba(255, 255, 255, 0.82));
+        box-shadow: var(--vcb-card-shadow);
+      }
+
+      .search-panel h1 {
+        color: var(--vcb-green-dark);
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .search-panel p {
+        max-width: 720px;
+        font-size: 1.03rem;
+        line-height: 1.7;
+      }
+
+      .search-box {
+        border: 1px solid rgba(0, 112, 60, 0.12);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 10px 24px rgba(16, 38, 26, 0.08);
+      }
+
+      .search-box .input-group-text {
+        border: 0;
+        background: transparent;
+        color: var(--vcb-green-dark);
+      }
+
+      .search-box .form-control {
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .search-box .form-control:focus {
+        box-shadow: none;
+      }
+
+      .empty-state {
+        border-radius: 18px;
+        padding: 1.25rem 1.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--vcb-card-shadow);
+        color: rgba(16, 38, 26, 0.8);
+      }
+
+      .section-title {
+        margin-bottom: 1rem;
+        font-size: clamp(1.35rem, 2.6vw, 2rem);
+        font-weight: 800;
+        color: var(--vcb-green-dark);
+      }
+
+      .section-subtitle {
+        color: rgba(16, 38, 26, 0.72);
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem;
+      }
+
+      .card-item {
+        grid-column: span 12;
+      }
+
+      @media (min-width: 576px) {
+        .card-item {
+          grid-column: span 6;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .card-item {
+          grid-column: span 4;
+        }
+      }
+
+      .card-tile {
+        height: 100%;
+        border: 0;
+        border-radius: 22px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--vcb-card-shadow);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .card-tile:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 52px rgba(16, 38, 26, 0.18);
+      }
+
+      .card-image-wrap {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        background: linear-gradient(135deg, rgba(0, 166, 81, 0.1), rgba(255, 255, 255, 0.7));
+        padding: 1rem;
+      }
+
+      .card-image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.12));
+      }
+
+      .card-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--vcb-green-dark);
+        background: rgba(0, 166, 81, 0.1);
+      }
+
+      .card-body-title {
+        margin-bottom: 0.4rem;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+
+      .card-body-text {
+        margin-bottom: 1rem;
+        color: rgba(16, 38, 26, 0.72);
+        line-height: 1.6;
+      }
+
+      .info-panel {
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--vcb-card-shadow);
+      }
+
+      .info-item {
+        display: flex;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+
+      .info-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: var(--vcb-green);
+        flex: 0 0 auto;
+      }
+
+      .info-item strong {
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 1rem;
+      }
+
+      .info-item span {
+        color: rgba(16, 38, 26, 0.72);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
+          <a class="brand" href="./index.html">
+            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" />
+          </a>
+          <a class="btn btn-home-pill" href="./index.html"> Về trang chủ </a>
+        </div>
+      </header>
+
+      <main class="container py-4 py-lg-5">
+        <section class="search-panel p-4 p-md-5 mb-4 mb-lg-5">
+          <div class="row align-items-center g-4">
+            <div class="col-12 col-lg-7">
+              <span class="card-badge mb-3"><i class="fa-solid fa-magnifying-glass"></i> Tìm thẻ theo tên</span>
+              <h1>Nhập tên thẻ bạn muốn xem</h1>
+            </div>
+            <div class="col-12 col-lg-5">
+              <div class="search-box p-2 p-sm-3">
+                <label class="form-label fw-semibold mb-2" for="cardSearch">Từ khóa tìm kiếm</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input id="cardSearch" type="search" class="form-control" placeholder="Ví dụ: Visa, JCB, Premium..." autocomplete="off" />
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 small text-muted">
+                  <span id="resultCount">6 thẻ hiển thị</span>
+                  <button id="clearSearch" type="button" class="btn btn-link p-0 text-decoration-none fw-semibold" style="color: var(--vcb-green-dark)">Xóa tìm kiếm</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-4">
+          <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+            <div>
+              <h2 class="section-title mb-1">Danh sách thẻ</h2>
+            </div>
+            <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary">Yêu cầu làm thẻ</a>
+          </div>
+
+          <div id="emptyState" class="empty-state d-none mb-3">Không tìm thấy thẻ nào khớp với từ khóa hiện tại. Hãy thử tên như Visa, Mastercard, JCB, Premium hoặc Travel.</div>
+
+          <div class="card-grid" id="cardGrid">
+            <article class="card-item" data-card-name="visa snack card visa">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-visa_snack_card.webp" alt="Vietcombank Visa Snack Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">Visa</span>
+                  <h3 class="card-body-title">Visa Snack Card</h3>
+                  <p class="card-body-text">Mẫu thẻ Visa gọn, dễ nhận diện, phù hợp với giao diện demo đơn giản.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-item" data-card-name="mastercard word card mastercard">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-mastercard_word_card.webp" alt="Vietcombank Mastercard Word Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">Mastercard</span>
+                  <h3 class="card-body-title">Mastercard Word Card</h3>
+                  <p class="card-body-text">Thiết kế nổi bật với phong cách thương hiệu Mastercard cổ điển.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-item" data-card-name="jcb card jcb">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-jcb_card.webp" alt="Vietcombank JCB Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">JCB</span>
+                  <h3 class="card-body-title">JCB Card</h3>
+                  <p class="card-body-text">Mẫu thẻ dành cho trải nghiệm thanh toán mang phong cách Nhật Bản.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-item" data-card-name="american express card american express">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-american_express_card.webp" alt="Vietcombank American Express Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">American Express</span>
+                  <h3 class="card-body-title">American Express Card</h3>
+                  <p class="card-body-text">Phù hợp để làm nổi bật nhóm thẻ quốc tế trong phần danh sách.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-item" data-card-name="vibe platinum card premium vibe platinum">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-vibe_platinum_card.webp" alt="Vietcombank Vibe Platinum Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">Premium</span>
+                  <h3 class="card-body-title">Vibe Platinum Card</h3>
+                  <p class="card-body-text">Tạo cảm giác cao cấp với nền thẻ tối và điểm nhấn thanh lịch.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-item" data-card-name="vietnam airlines amex travel vietnam airlines american express">
+              <div class="card card-tile">
+                <div class="card-image-wrap">
+                  <img src="./asset/images/vcb-vietnam_airlines_american_express.webp" alt="Vietcombank Vietnam Airlines American Express Card" />
+                </div>
+                <div class="card-body p-4">
+                  <span class="card-badge mb-2">Travel</span>
+                  <h3 class="card-body-title">Vietnam Airlines Amex</h3>
+                  <p class="card-body-text">Mẫu thẻ liên kết, phù hợp để trình bày cùng các lựa chọn khác.</p>
+                  <a href="./card-request.html" class="btn btn-vcb btn-vcb-primary w-100">Chọn thẻ này</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("cardSearch");
+        const clearButton = document.getElementById("clearSearch");
+        const resultCount = document.getElementById("resultCount");
+        const emptyState = document.getElementById("emptyState");
+        const cards = Array.from(document.querySelectorAll("[data-card-name]"));
+
+        function updateCards() {
+          const keyword = searchInput.value.trim().toLowerCase();
+          let visibleCount = 0;
+
+          cards.forEach((card) => {
+            const name = card.dataset.cardName || "";
+            const matched = keyword === "" || name.includes(keyword);
+            card.classList.toggle("d-none", !matched);
+            if (matched) visibleCount += 1;
+          });
+
+          resultCount.textContent = `${visibleCount} thẻ hiển thị`;
+          emptyState.classList.toggle("d-none", visibleCount !== 0);
+        }
+
+        searchInput.addEventListener("input", updateCards);
+        clearButton.addEventListener("click", () => {
+          searchInput.value = "";
+          searchInput.focus();
+          updateCards();
+        });
+
+        updateCards();
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
