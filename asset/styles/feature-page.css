@@ -7,6 +7,14 @@ body.feature-page {
   --vcb-muted: #5f6f67;
   --vcb-white: #ffffff;
   --vcb-danger: #dc3545;
+  --vcb-surface-bg: rgba(255, 255, 255, 0.94);
+  --vcb-surface-shadow: 0 20px 60px rgba(16, 44, 29, 0.1);
+  --vcb-surface-radius: 24px;
+  --vcb-control-radius: 14px;
+  --vcb-control-min-height: 52px;
+  --vcb-control-focus-ring: 0 0 0 0.2rem rgba(0, 166, 81, 0.12);
+  --vcb-btn-shadow: 0 16px 30px rgba(0, 166, 81, 0.16);
+  --vcb-outline-bg: rgba(255, 255, 255, 0.72);
 
   min-height: 100vh;
   font-family: "Inter", sans-serif;
@@ -26,91 +34,61 @@ body.feature-page .feature-shell {
   padding: 24px;
 }
 
-body.feature-page .feature-panel,
-body.feature-page .deposit-card,
-body.feature-page .hero-panel,
-body.feature-page .card {
-  background: rgba(255, 255, 255, 0.94);
+body.feature-page :is(.feature-panel, .deposit-card, .hero-panel, .card) {
+  background: var(--vcb-surface-bg);
   border: 1px solid var(--vcb-border);
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(16, 44, 29, 0.1);
+  border-radius: var(--vcb-surface-radius);
+  box-shadow: var(--vcb-surface-shadow);
   backdrop-filter: blur(10px);
 }
 
-body.feature-page .page-title,
-body.feature-page .super-large,
-body.feature-page .section-title,
-body.feature-page .card-title {
+body.feature-page :is(.page-title, .super-large, .section-title, .card-title) {
   color: var(--vcb-primary-green);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
-body.feature-page .form-label,
-body.feature-page .label,
-body.feature-page .field-label {
+body.feature-page :is(.form-label, .label, .field-label) {
   font-weight: 700;
   color: var(--vcb-text);
 }
 
-body.feature-page .form-control,
-body.feature-page .form-select {
-  min-height: 52px;
-  border-radius: 14px;
+body.feature-page :is(.form-control, .form-select) {
+  min-height: var(--vcb-control-min-height);
+  border-radius: var(--vcb-control-radius);
   border-color: var(--vcb-border);
   box-shadow: none;
 }
 
-body.feature-page .form-control:focus,
-body.feature-page .form-select:focus {
+body.feature-page :is(.form-control, .form-select):focus {
   border-color: var(--vcb-secondary-green);
-  box-shadow: 0 0 0 0.2rem rgba(0, 166, 81, 0.12);
+  box-shadow: var(--vcb-control-focus-ring);
 }
 
-body.feature-page .btn,
-body.feature-page .btn-vcb,
-body.feature-page .btn-deposit,
-body.feature-page .btn-bank,
-body.feature-page .large-button,
-body.feature-page .hero-cta,
-body.feature-page .btn-primary,
-body.feature-page .btn-outline-success,
-body.feature-page .btn-outline-secondary {
-  border-radius: 14px;
+body.feature-page :is(.btn, .btn-vcb, .btn-deposit, .btn-bank, .large-button, .hero-cta, .btn-primary, .btn-outline-success, .btn-outline-secondary) {
+  border-radius: var(--vcb-control-radius);
   font-weight: 700;
 }
 
-body.feature-page .btn-vcb,
-body.feature-page .btn-deposit,
-body.feature-page .btn-bank,
-body.feature-page .large-button,
-body.feature-page .hero-cta,
-body.feature-page .btn-primary {
+body.feature-page :is(.btn-vcb, .btn-deposit, .btn-bank, .large-button, .hero-cta, .btn-primary) {
   color: #fff;
   border: 0;
   background: linear-gradient(135deg, var(--vcb-primary-green), var(--vcb-secondary-green));
-  box-shadow: 0 16px 30px rgba(0, 166, 81, 0.16);
+  box-shadow: var(--vcb-btn-shadow);
 }
 
-body.feature-page .btn-vcb:hover,
-body.feature-page .btn-deposit:hover,
-body.feature-page .btn-bank:hover,
-body.feature-page .large-button:hover,
-body.feature-page .hero-cta:hover,
-body.feature-page .btn-primary:hover {
+body.feature-page :is(.btn-vcb, .btn-deposit, .btn-bank, .large-button, .hero-cta, .btn-primary):hover {
   color: #fff;
   filter: brightness(1.04);
 }
 
-body.feature-page .btn-outline-secondary,
-body.feature-page .btn-outline-success {
+body.feature-page :is(.btn-outline-secondary, .btn-outline-success) {
   border-color: rgba(0, 112, 60, 0.4);
   color: var(--vcb-primary-green);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--vcb-outline-bg);
 }
 
-body.feature-page .btn-outline-secondary:hover,
-body.feature-page .btn-outline-success:hover {
+body.feature-page :is(.btn-outline-secondary, .btn-outline-success):hover {
   color: var(--vcb-primary-green);
   background: rgba(233, 247, 239, 0.9);
 }
@@ -126,15 +104,11 @@ body.feature-page .text-vcb {
   color: var(--vcb-primary-green);
 }
 
-body.feature-page .page-desc,
-body.feature-page .body-small,
-body.feature-page .text-secondary,
-body.feature-page .text-muted {
+body.feature-page :is(.page-desc, .body-small, .text-secondary, .text-muted) {
   color: var(--vcb-muted) !important;
 }
 
-body.feature-page .main-logo img,
-body.feature-page .brand-row img {
+body.feature-page :is(.main-logo img, .brand-row img) {
   width: 180px;
   height: auto;
 }
@@ -144,8 +118,7 @@ body.feature-page .brand-row img {
     padding: 16px;
   }
 
-  body.feature-page .main-logo img,
-  body.feature-page .brand-row img {
+  body.feature-page :is(.main-logo img, .brand-row img) {
     width: 150px;
   }
 }
