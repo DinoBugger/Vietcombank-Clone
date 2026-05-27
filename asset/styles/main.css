@@ -256,6 +256,29 @@ a.active {
   position: relative;
 }
 
+/* --- UNIFIED "VỀ TRANG CHỦ" BUTTON --- */
+.btn-home {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--vcb-btn-primary-bg);
+  color: #ffffff;
+  font-size: 0.95rem;
+  text-align: center;
+  transition:
+    background 160ms ease,
+    transform 120ms ease;
+}
+
+.btn-home:hover,
+.btn-home:focus {
+  background: var(--bs-success);
+  color: #ffffff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
 /* --- HAMBURGER MENU --- */
 .hamburger-dropdown {
   display: none;
