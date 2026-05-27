@@ -81,6 +81,12 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("cardForm");
+        const elements = form.elements;
+        const fullnameInput = elements.fullname;
+        const idNumberInput = elements.idNumber;
+        const emailInput = elements.email;
+        const addressInput = elements.address;
+        const cardTypeInput = elements.cardType;
         const submitButton = form.querySelector("button[type='submit']");
 
         const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
@@ -88,7 +94,6 @@
         if (emailJsReady) {
           try {
             emailjs.init(EMAIL_PUBLIC_KEY);
-            console.log("EmailJS initialized");
           } catch (err) {
             console.warn("EmailJS init failed", err);
           }
@@ -104,15 +109,15 @@
           e.preventDefault();
 
           if (!form.checkValidity()) {
-            form.classList.add("was-validated");
+            form.reportValidity();
             return;
           }
 
-          const fullname = document.getElementById("fullname").value.trim();
-          const idNumber = document.getElementById("idNumber").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const address = document.getElementById("address").value.trim();
-          const cardType = document.getElementById("cardType").value;
+          const fullname = fullnameInput.value.trim();
+          const idNumber = idNumberInput.value.trim();
+          const email = emailInput.value.trim();
+          const address = addressInput.value.trim();
+          const cardType = cardTypeInput.value;
 
           const deliveryDate = addDays(new Date(), 2);
           const deliveryStr = deliveryDate.toLocaleString();
@@ -137,12 +142,10 @@
               .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, params)
               .then(
                 (response) => {
-                  console.log("EmailJS send success", response);
                   alert("Yêu cầu đã được gửi thành công!");
                   form.reset();
                 },
                 (error) => {
-                  console.error("EmailJS send failed", error);
                   alert("Gửi thất bại: " + (error.text || error.message || "Lỗi"));
                 },
               )

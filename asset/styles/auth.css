@@ -38,6 +38,32 @@ body.auth-page {
 .large-button:hover {
   background-color: var(--vcb-light-green) !important;
 }
+
+.auth-form {
+  margin-top: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 112, 60, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 40px rgba(16, 44, 29, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.auth-form .form-control {
+  min-height: 50px;
+  border-radius: 12px;
+  border-color: rgba(0, 112, 60, 0.18);
+}
+
+.auth-form .form-control:focus {
+  border-color: var(--vcb-primary-green);
+  box-shadow: 0 0 0 0.2rem rgba(0, 166, 81, 0.12);
+}
+
+.auth-form .mb-3:last-of-type {
+  margin-bottom: 0 !important;
+}
+
 .register-link,
 .login-link {
   display: flex;

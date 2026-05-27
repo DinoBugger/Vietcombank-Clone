@@ -43,7 +43,7 @@
             <p class="body-small text-secondary">Xin kính chào quý khách</p>
           </div>
           <p class="super-large mb-2">Thông tin đăng kí</p>
-          <form class="text-start" id="signupForm" novalidate>
+          <form class="auth-form text-start" id="signupForm" novalidate>
             <div class="mb-3">
               <label for="fullname" class="form-label">Họ và tên</label>
               <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
@@ -80,11 +80,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const form = document.getElementById("signupForm");
-      const fullnameInput = document.getElementById("fullname");
-      const phoneInput = document.getElementById("phone");
-      const passwordInput = document.getElementById("password");
-      const pinInput = document.getElementById("pin");
-      const accountInput = document.getElementById("accountNumber");
+      const elements = form.elements;
+      const fullnameInput = elements.fullname;
+      const phoneInput = elements.phone;
+      const passwordInput = elements.password;
+      const pinInput = elements.pin;
+      const accountInput = elements.accountNumber;
       const phoneError = document.getElementById("phoneError");
       const phoneExistsError = document.getElementById("phoneExistsError");
       const passwordError = document.getElementById("passwordError");
@@ -92,81 +93,79 @@
       const accountError = document.getElementById("accountError");
       const accountExistsError = document.getElementById("accountExistsError");
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
+      function clearFieldValidity() {
+        phoneInput.setCustomValidity("");
+        passwordInput.setCustomValidity("");
+        pinInput.setCustomValidity("");
+        accountInput.setCustomValidity("");
+      }
 
+      function clearFieldMessages() {
         phoneError.classList.add("d-none");
         phoneExistsError.classList.add("d-none");
         passwordError.classList.add("d-none");
         pinError.classList.add("d-none");
         accountError.classList.add("d-none");
         accountExistsError.classList.add("d-none");
+      }
 
-        let isValid = true;
+      function syncBasicValidity() {
+        phoneInput.setCustomValidity(phoneInput.validity.valueMissing || phoneInput.validity.patternMismatch ? "Số điện thoại phải có đúng 10 số" : "");
+        passwordInput.setCustomValidity(passwordInput.validity.valueMissing || passwordInput.validity.tooShort ? "Mật khẩu phải có ít nhất 6 kí tự" : "");
+        pinInput.setCustomValidity(pinInput.validity.valueMissing || pinInput.validity.patternMismatch ? "Mã PIN phải có đúng 6 số" : "");
+        accountInput.setCustomValidity(accountInput.validity.valueMissing || accountInput.validity.patternMismatch ? "Số tài khoản phải có ít nhất 8 chữ số" : "");
+      }
 
-        if (!/^\d{10}$/.test(phoneInput.value)) {
-          phoneError.classList.remove("d-none");
-          isValid = false;
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        clearFieldMessages();
+        clearFieldValidity();
+        syncBasicValidity();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
         }
 
-        if (passwordInput.value.length < 6) {
-          passwordError.classList.remove("d-none");
-          isValid = false;
+        const phoneValue = phoneInput.value.trim();
+        const accountValue = accountInput.value.trim();
+        const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
+
+        const phoneTaken = users.some((user) => String(user.phone) === String(phoneValue));
+        const accountTaken = users.some((user) => String(user.accountNumber) === String(accountValue));
+
+        if (phoneTaken) {
+          phoneInput.setCustomValidity("Số điện thoại này đã được sử dụng");
+          phoneExistsError.classList.remove("d-none");
         }
 
-        if (!/^\d{6}$/.test(pinInput.value)) {
-          pinError.classList.remove("d-none");
-          isValid = false;
+        if (accountTaken) {
+          accountInput.setCustomValidity("Số tài khoản này đã tồn tại");
+          accountExistsError.classList.remove("d-none");
         }
 
-        if (!/^\d{8,}$/.test(accountInput.value)) {
-          accountError.classList.remove("d-none");
-          isValid = false;
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
         }
 
-        if (isValid) {
-          let users = JSON.parse(localStorage.getItem("userinfo") || "[]");
+        const newUser = {
+          id: Date.now(),
+          fullname: fullnameInput.value.trim(),
+          phone: phoneValue,
+          password: passwordInput.value,
+          pin: pinInput.value,
+          accountNumber: accountValue,
+          balance: 0,
+          createdAt: new Date().toISOString(),
+        };
 
-          // Uniqueness checks
-          const phoneTaken = users.some((u) => String(u.phone) === String(phoneInput.value));
-          const accountTaken = users.some((u) => String(u.accountNumber) === String(accountInput.value));
+        users.push(newUser);
+        localStorage.setItem("userinfo", JSON.stringify(users, null, 2));
 
-          if (phoneTaken) {
-            phoneExistsError.classList.remove("d-none");
-            isValid = false;
-          }
-
-          if (accountTaken) {
-            accountExistsError.classList.remove("d-none");
-            isValid = false;
-          }
-
-          if (!isValid) {
-            return; // stop submission when duplicates found
-          }
-
-          // Create new user object
-          const newUser = {
-            id: Date.now(),
-            fullname: fullnameInput.value,
-            phone: phoneInput.value,
-            password: passwordInput.value,
-            pin: pinInput.value,
-            accountNumber: accountInput.value,
-            balance: 0,
-            createdAt: new Date().toISOString(),
-          };
-
-          // Add new user
-          users.push(newUser);
-
-          // Save to localStorage
-          localStorage.setItem("userinfo", JSON.stringify(users, null, 2));
-
-          alert("Đăng kí thành công! Chuyển hướng tới trang đăng nhập...");
-          // Redirect to login page
-          window.location.href = "./login.html";
-        }
+        alert("Đăng kí thành công! Chuyển hướng tới trang đăng nhập...");
+        window.location.href = "./login.html";
       });
     </script>
   </body>

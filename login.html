@@ -43,7 +43,7 @@
             <p class="body-small text-secondary">Xin kính chào quý khách</p>
           </div>
           <p class="super-large mb-5">Thông tin đăng nhập</p>
-          <form class="text-start" id="loginForm" novalidate>
+          <form class="auth-form text-start" id="loginForm" novalidate>
             <div class="mb-3">
               <label for="phone" class="form-label">Số điện thoại (10 số)</label>
               <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại" pattern="[0-9]{10}" maxlength="10" required />
@@ -64,48 +64,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const form = document.getElementById("loginForm");
-      const phoneInput = document.getElementById("phone");
-      const passwordInput = document.getElementById("password");
+      const elements = form.elements;
+      const phoneInput = elements.phone;
+      const passwordInput = elements.password;
       const phoneError = document.getElementById("phoneError");
       const passwordError = document.getElementById("passwordError");
+
+      function clearFieldValidity() {
+        phoneInput.setCustomValidity("");
+        passwordInput.setCustomValidity("");
+      }
+
+      function clearFieldMessages() {
+        phoneError.classList.add("d-none");
+        passwordError.classList.add("d-none");
+      }
+
+      function syncBasicValidity() {
+        phoneInput.setCustomValidity(phoneInput.validity.valueMissing || phoneInput.validity.patternMismatch ? "Số điện thoại phải có đúng 10 số" : "");
+        passwordInput.setCustomValidity(passwordInput.validity.valueMissing || passwordInput.validity.tooShort ? "Mật khẩu phải có ít nhất 6 kí tự" : "");
+      }
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        // Reset error messages
-        phoneError.classList.add("d-none");
-        passwordError.classList.add("d-none");
+        clearFieldMessages();
+        clearFieldValidity();
+        syncBasicValidity();
 
-        let isValid = true;
-
-        // Validate phone (10 numbers)
-        if (!/^\d{10}$/.test(phoneInput.value)) {
-          phoneError.classList.remove("d-none");
-          isValid = false;
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
         }
 
-        // Validate password (at least 6 characters)
-        if (passwordInput.value.length < 6) {
-          passwordError.classList.remove("d-none");
-          isValid = false;
-        }
+        const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
+        const phoneValue = phoneInput.value.trim();
+        const passwordValue = passwordInput.value;
+        const user = users.find((entry) => entry.phone === phoneValue && entry.password === passwordValue);
 
-        if (isValid) {
-          // Get users from localStorage
-          const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
-
-          // Find user with matching phone and password
-          const user = users.find((u) => u.phone === phoneInput.value && u.password === passwordInput.value);
-
-          if (user) {
-            alert("Đăng nhập thành công!");
-            // Save logged in user info
-            localStorage.setItem("currentUser", JSON.stringify(user));
-            // Redirect to index page
-            window.location.href = "./index.html";
-          } else {
-            alert("Số điện thoại hoặc mật khẩu không chính xác!");
-          }
+        if (user) {
+          alert("Đăng nhập thành công!");
+          localStorage.setItem("currentUser", JSON.stringify(user));
+          window.location.href = "./index.html";
+        } else {
+          alert("Số điện thoại hoặc mật khẩu không chính xác!");
         }
       });
     </script>

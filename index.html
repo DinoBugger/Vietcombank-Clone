@@ -109,6 +109,20 @@
         background: rgba(200, 223, 45, 0.82);
       }
 
+      .mobile-auth-actions {
+        display: none;
+      }
+
+      @media (max-width: 767.98px) {
+        .account-box {
+          display: none !important;
+        }
+
+        .mobile-auth-actions.is-visible {
+          display: flex;
+        }
+      }
+
       .hero {
         border-radius: 14px;
         padding: 2.2rem;
@@ -189,6 +203,35 @@
       .hero {
         background: url("./asset/images/vcb-banner.webp") right / cover fixed no-repeat;
       }
+
+      @media (max-width: 767.98px) {
+        .navbar-collapse {
+          padding-top: 0.75rem;
+          text-align: center;
+        }
+
+        .navbar-collapse .navbar-nav {
+          width: 100%;
+          align-items: center;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .navbar-collapse .nav-item {
+          width: 100%;
+        }
+
+        .navbar-collapse .nav-link {
+          display: inline-block;
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .auth-actions,
+        .mobile-auth-actions {
+          width: 100%;
+        }
+      }
     </style>
   </head>
 
@@ -236,6 +279,9 @@
               <div id="authActions" class="auth-actions align-items-center justify-content-center gap-2" style="display: flex">
                 <a class="btn btn-vcb btn-signup" href="./signup.html">Đăng kí</a>
                 <a class="btn btn-vcb btn-login" href="./login.html">Đăng nhập</a>
+              </div>
+              <div id="mobileAuthActions" class="mobile-auth-actions align-items-center justify-content-center gap-2 mt-2">
+                <button id="mobileLogoutBtn" class="btn btn-vcb btn-login" type="button">Đăng xuất</button>
               </div>
             </div>
 
@@ -300,6 +346,8 @@
       const accountName = document.getElementById("accountName");
       const accountBalance = document.getElementById("accountBalance");
       const authActions = document.getElementById("authActions");
+      const mobileAuthActions = document.getElementById("mobileAuthActions");
+      const logoutButtons = [document.getElementById("logoutBtn"), document.getElementById("mobileLogoutBtn")];
 
       function formatBalance(rawBalance) {
         const numeric = Number(rawBalance);
@@ -343,6 +391,7 @@
         if (!currentUser) {
           authActions.style.display = "flex";
           accountBox.style.display = "none";
+          mobileAuthActions.classList.remove("is-visible");
           return;
         }
 
@@ -353,17 +402,21 @@
 
         authActions.style.display = "none";
         accountBox.style.display = "block";
+        mobileAuthActions.classList.add("is-visible");
       }
 
       renderHeaderByAuth();
 
-      const logoutBtn = document.getElementById("logoutBtn");
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
+      logoutButtons.forEach((button) => {
+        if (!button) {
+          return;
+        }
+
+        button.addEventListener("click", () => {
           localStorage.removeItem("currentUser");
           renderHeaderByAuth();
         });
-      }
+      });
     </script>
   </body>
 </html>

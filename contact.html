@@ -214,21 +214,18 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("contactForm");
+        const elements = form.elements;
+        const fullnameInput = elements.fullname;
+        const emailInput = elements.email;
+        const subjectInput = elements.subject;
+        const messageInput = elements.message;
         const submitButton = form.querySelector("button[type='submit']");
 
-        console.log(typeof emailjs);
-        console.log("EMAIL_PUBLIC_KEY:", EMAIL_PUBLIC_KEY);
-        console.log("EMAIL_SERVICE_ID:", EMAIL_SERVICE_ID);
-        console.log("EMAIL_TEMPLATE_ID:", EMAIL_TEMPLATE_ID);
-
         const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
-
-        console.log("emailJsReady:", emailJsReady);
 
         if (emailJsReady) {
           try {
             emailjs.init(EMAIL_PUBLIC_KEY);
-            console.log("✅ EmailJS initialized successfully");
           } catch (error) {
             console.warn("⚠️ EmailJS init failed:", error);
           }
@@ -239,22 +236,15 @@
         form.addEventListener("submit", (e) => {
           e.preventDefault();
 
-          const nameValue = document.getElementById("fullname").value.trim();
-          const emailValue = document.getElementById("email").value.trim();
-          const subjectValue = document.getElementById("subject").value.trim();
-          const messageValue = document.getElementById("message").value.trim();
-
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          if (!nameValue || !emailValue || !subjectValue || !messageValue) {
-            alert("Vui lòng điền đầy đủ tất cả các trường!");
+          if (!form.checkValidity()) {
+            form.reportValidity();
             return;
           }
 
-          if (!emailRegex.test(emailValue)) {
-            alert("Email không hợp lệ!");
-            return;
-          }
+          const nameValue = fullnameInput.value.trim();
+          const emailValue = emailInput.value.trim();
+          const subjectValue = subjectInput.value.trim();
+          const messageValue = messageInput.value.trim();
 
           if (!emailJsReady) {
             alert("EmailJS chưa được cấu hình. Kiểm tra lại config.js hoặc khóa EmailJS.");
@@ -276,12 +266,10 @@
             .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, emailParams)
             .then(
               (response) => {
-                console.log("✅ Success!", response.status, response.text);
                 alert("Gửi liên hệ thành công!");
                 form.reset();
               },
               (error) => {
-                console.error("❌ Failed...", error);
                 alert("Gửi thất bại: " + error.text || error.message);
               },
             )

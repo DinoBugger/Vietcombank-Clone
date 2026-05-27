@@ -157,7 +157,8 @@
     <script>
       const balanceEl = document.getElementById("currentBalance");
       const form = document.getElementById("depositForm");
-      const amountInput = document.getElementById("amount");
+      const elements = form.elements;
+      const amountInput = elements.amount;
       const amountError = document.getElementById("amountError");
 
       function getCurrentUser() {
@@ -226,6 +227,10 @@
         localStorage.setItem("currentUser", JSON.stringify(nextUser));
       }
 
+      function clearAmountValidity() {
+        amountInput.setCustomValidity("");
+      }
+
       // BEGIN of Logic
       const currentUser = redirectIfNotLoggedIn();
       if (currentUser) {
@@ -236,6 +241,7 @@
         event.preventDefault();
 
         amountError.classList.add("d-none");
+        clearAmountValidity();
 
         const rawValue = amountInput.value.trim();
         const numericValue = Number(rawValue);
@@ -243,9 +249,13 @@
         const isValidAmount = rawValue !== "" && Number.isFinite(numericValue) && numericValue > 0 && /^\d+(\.\d+)?$/.test(rawValue);
 
         if (!isValidAmount) {
+          amountInput.setCustomValidity("Số tiền không hợp lệ. Vui lòng nhập số dương và không để trống.");
+          amountInput.reportValidity();
           amountError.classList.remove("d-none");
           return;
         }
+
+        amountInput.setCustomValidity("");
 
         const latestUser = getCurrentUser();
         if (!latestUser) {
@@ -261,6 +271,7 @@
         updateStoredUser(updatedUser);
         renderBalance();
         amountInput.value = "";
+        clearAmountValidity();
 
         alert(`Nạp tiền thành công: ${formatMoney(numericValue)}`);
       });

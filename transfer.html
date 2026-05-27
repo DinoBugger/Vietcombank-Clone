@@ -248,10 +248,11 @@
     <script>
       const balanceEl = document.getElementById("currentBalance");
       const form = document.getElementById("transferForm");
-      const recipientInput = document.getElementById("recipientAccount");
+      const elements = form.elements;
+      const recipientInput = elements.recipientAccount;
       const checkRecipientBtn = document.getElementById("checkRecipientBtn");
       const recipientStatus = document.getElementById("recipientStatus");
-      const amountInput = document.getElementById("amount");
+      const amountInput = elements.amount;
       const amountError = document.getElementById("amountError");
       const balanceError = document.getElementById("balanceError");
       const resetBtn = document.getElementById("resetBtn");
@@ -347,6 +348,11 @@
         balanceError.classList.add("d-none");
       }
 
+      function clearFieldValidity() {
+        recipientInput.setCustomValidity("");
+        amountInput.setCustomValidity("");
+      }
+
       function clearRecipientState() {
         checkedRecipientAccount = "";
       }
@@ -371,14 +377,17 @@
         }
 
         const accountNumber = recipientInput.value.trim();
+        recipientInput.setCustomValidity("");
 
         if (!/^\d{8,}$/.test(accountNumber)) {
+          recipientInput.setCustomValidity("Số tài khoản phải có ít nhất 8 chữ số.");
           setRecipientStatus("danger", "Số tài khoản phải có ít nhất 8 chữ số.");
           clearRecipientState();
           return null;
         }
 
         if (String(accountNumber) === String(currentUser.accountNumber)) {
+          recipientInput.setCustomValidity("Không thể chuyển tiền cho chính tài khoản của bạn.");
           setRecipientStatus("danger", "Không thể chuyển tiền cho chính tài khoản của bạn.");
           clearRecipientState();
           return null;
@@ -386,15 +395,37 @@
 
         const recipient = findRecipient(accountNumber);
         if (!recipient) {
+          recipientInput.setCustomValidity("Số tài khoản này không tồn tại.");
           setRecipientStatus("danger", "Số tài khoản này không tồn tại.");
           clearRecipientState();
           return null;
         }
 
         checkedRecipientAccount = accountNumber;
+        recipientInput.setCustomValidity("");
         setRecipientStatus("success", `Đã kiểm tra: ${recipient.fullname || "Người nhận"}`);
         showRecipient(recipient);
         return recipient;
+      }
+
+      function validateTransferAmount(senderBalance) {
+        const rawAmount = amountInput.value.trim();
+        amountInput.setCustomValidity("");
+
+        const transferAmount = Number(rawAmount);
+        const isValidAmount = rawAmount !== "" && Number.isFinite(transferAmount) && transferAmount > 0 && /^\d+$/.test(rawAmount);
+
+        if (!isValidAmount) {
+          amountInput.setCustomValidity("Vui lòng nhập số tiền là số nguyên dương.");
+          return null;
+        }
+
+        if (Number(senderBalance || 0) < transferAmount) {
+          amountInput.setCustomValidity("Số dư không đủ để thực hiện giao dịch.");
+          return null;
+        }
+
+        return transferAmount;
       }
 
       const currentUser = renderBalance();
@@ -405,17 +436,26 @@
 
       checkRecipientBtn.addEventListener("click", () => {
         validateRecipientAccount();
+        recipientInput.reportValidity();
       });
 
       recipientInput.addEventListener("input", () => {
+        recipientInput.setCustomValidity("");
         if (recipientInput.value.trim() !== checkedRecipientAccount) {
           clearRecipientState();
+          setRecipientStatus("muted", "Có thể kiểm tra nhanh số tài khoản trước khi chuyển.");
         }
+      });
+
+      amountInput.addEventListener("input", () => {
+        amountInput.setCustomValidity("");
+        balanceError.classList.add("d-none");
       });
 
       resetBtn.addEventListener("click", () => {
         form.reset();
         clearErrors();
+        clearFieldValidity();
         clearRecipientState();
         setRecipientStatus("muted", "Có thể kiểm tra nhanh số tài khoản trước khi chuyển.");
       });
@@ -423,45 +463,31 @@
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         clearErrors();
+        clearFieldValidity();
 
         const latestUser = requireCurrentUser();
         if (!latestUser) {
           return;
         }
 
-        const recipientAccount = recipientInput.value.trim();
-        const rawAmount = amountInput.value.trim();
-        const transferAmount = Number(rawAmount);
+        const recipient = validateRecipientAccount();
+        const transferAmount = validateTransferAmount(latestUser.balance);
 
-        if (!/^\d{8,}$/.test(recipientAccount)) {
-          setRecipientStatus("danger", "Số tài khoản phải có ít nhất 8 chữ số.");
-          clearRecipientState();
+        if (!form.checkValidity()) {
+          form.reportValidity();
           return;
         }
 
-        const recipient = findRecipient(recipientAccount);
-        if (!recipient) {
-          setRecipientStatus("danger", "Số tài khoản người nhận không tồn tại.");
-          clearRecipientState();
-          return;
-        }
-
-        if (String(recipient.accountNumber) === String(latestUser.accountNumber)) {
-          setRecipientStatus("danger", "Không thể chuyển tiền cho chính tài khoản của bạn.");
-          clearRecipientState();
-          return;
-        }
-
-        const isValidAmount = rawAmount !== "" && Number.isFinite(transferAmount) && transferAmount > 0 && /^\d+$/.test(rawAmount);
-
-        if (!isValidAmount) {
-          amountError.classList.remove("d-none");
+        if (!recipient || transferAmount === null) {
+          form.reportValidity();
           return;
         }
 
         const senderBalance = Number(latestUser.balance || 0);
         if (senderBalance < transferAmount) {
           balanceError.classList.remove("d-none");
+          amountInput.setCustomValidity("Số dư không đủ để thực hiện giao dịch.");
+          amountInput.reportValidity();
           return;
         }
 
@@ -508,6 +534,7 @@
         const recipientName = transferredRecipient.fullname || "Người nhận";
 
         form.reset();
+        clearFieldValidity();
         clearRecipientState();
         alert(`Chuyển tiền thành công ${formatMoney(transferAmount)} cho ${recipientName}.`);
       });
