@@ -22,127 +22,7 @@
 
     <!-- RESET CSS-->
     <link rel="stylesheet" href="./asset/styles/reset.css" />
-    <style>
-      /* Color code */
-      :root {
-        --vcb-primary-green: #00a651;
-        --vcb-light-green: #b5d334;
-        --vcb-deep-green: #00703c;
-        --vcb-neutral-white: #ffffff;
-        --vcb-soft-grey: #f3f4f6;
-        --vcb-text-black: #111827;
-      }
-
-      /* text style */
-
-      .body-large {
-        font-size: 18px;
-        line-height: 1.5;
-        font-weight: 400;
-      }
-
-      .body-medium {
-        font-size: 16px;
-        line-height: 1.5;
-        font-weight: 400;
-      }
-
-      .body-small {
-        font-size: 14px;
-        line-height: 1.4;
-        font-weight: 400;
-      }
-
-      .button-large {
-        font-size: 16px;
-        line-height: 1;
-        font-weight: 600;
-      }
-
-      .numeric-display {
-        font-size: 20px;
-        line-height: 1;
-        font-weight: 700;
-      }
-
-      .input-text {
-        font-size: 16px;
-        line-height: 1;
-        font-weight: 400;
-      }
-
-      .super-large {
-        font-size: 30px;
-        line-height: normal;
-        font-weight: 800;
-      }
-
-      .hero-section {
-        font-size: 48px;
-        line-height: 1.2;
-        font-weight: 700;
-      }
-
-      .section-title {
-        font-size: 32px;
-        line-height: 1.3;
-        font-weight: 700;
-      }
-
-      .card-title {
-        font-size: 24px;
-        line-height: 1.4;
-        font-weight: 600;
-      }
-
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-
-      body {
-        background-image: url("asset/images/vcb-digibank-background.jpg");
-        background-repeat: no-repeat; /* Không lặp lại ảnh */
-        background-size: cover; /* Ảnh phủ kín toàn bộ màn hình */
-        background-position: center; /* Căn giữa ảnh */
-        background-attachment: fixed; /* Ảnh đứng yên khi cuộn trang */
-        min-height: 100vh;
-        font-family: "Inter", sans-serif;
-      }
-      /* Tùy chỉnh nhỏ cho Logo và Button không có sẵn trong BS5 */
-      .main-logo img {
-        width: 200px;
-        height: auto;
-      }
-      .btn-vcb {
-        background-color: var(--vcb-deep-green);
-        color: white;
-        border-radius: 10px;
-        padding: 5px 15px;
-        display: inline-block;
-      }
-      .text-vcb {
-        color: var(--vcb-deep-green);
-      }
-
-      .large-button {
-        width: 100%;
-        color: var(--vcb-neutral-white);
-        background-color: var(--vcb-deep-green);
-      }
-
-      .large-button:hover {
-        background-color: var(--vcb-light-green) !important;
-      }
-      .login-link {
-        display: flex;
-        justify-content: end;
-      }
-
-      .login-link:hover {
-        color: var(--vcb-primary-green);
-      }
-    </style>
+    <link rel="stylesheet" href="./asset/styles/auth.css" />
   </head>
 
   <body>
@@ -190,7 +70,7 @@
               <input type="text" class="form-control" id="pin" placeholder="Nhập mã pin" pattern="[0-9]{6}" maxlength="6" required />
               <small class="text-danger d-none" id="pinError">Mã PIN phải có đúng 6 số</small>
             </div>
-            <div class="login-link mb-3"><a href="login.html">Chưa có tài khoản ?</a></div>
+            <div class="login-link mb-3"><a href="login.html">Đã có tài khoản ?</a></div>
             <button type="submit" class="btn large-button rounded-3">Đăng kí</button>
           </form>
         </div>

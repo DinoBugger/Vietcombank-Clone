@@ -1,0 +1,63 @@
+/* Consolidated auth page styles (moved from inline <style> in login.html and signup.html) */
+:root {
+  --vcb-primary-green: #00a651;
+  --vcb-light-green: #b5d334;
+  --vcb-deep-green: #00703c;
+  --vcb-neutral-white: #ffffff;
+  --vcb-soft-grey: #f3f4f6;
+  --vcb-text-black: #111827;
+}
+body.auth-page {
+  background-image: url("asset/images/vcb-digibank-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+.main-logo img {
+  width: 200px;
+  height: auto;
+}
+.btn-vcb {
+  background-color: var(--vcb-deep-green);
+  color: #fff;
+  border-radius: 10px;
+  padding: 5px 15px;
+  display: inline-block;
+}
+.text-vcb {
+  color: var(--vcb-deep-green);
+}
+.large-button {
+  width: 100%;
+  color: var(--vcb-neutral-white);
+  background-color: var(--vcb-deep-green);
+}
+.large-button:hover {
+  background-color: var(--vcb-light-green) !important;
+}
+.register-link,
+.login-link {
+  display: flex;
+  justify-content: end;
+}
+.register-link:hover,
+.login-link:hover {
+  color: var(--vcb-primary-green);
+}
+/* Typography helpers kept minimal; prefer Bootstrap utility classes in markup */
+.super-large {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 800;
+}
+.body-large {
+  font-size: 18px;
+  line-height: 1.5;
+}
+.body-small {
+  font-size: 14px;
+  line-height: 1.4;
+}

@@ -98,6 +98,26 @@
       body {
         background-color: var(--vcb-soft-grey);
       }
+
+      .contact-form-card {
+        background: var(--vcb-neutral-white);
+        border: 1px solid rgba(0, 112, 60, 0.14);
+        border-radius: 20px;
+        box-shadow: 0 18px 40px rgba(17, 24, 39, 0.14);
+      }
+
+      .contact-form-card .super-large {
+        color: var(--vcb-deep-green);
+      }
+
+      .contact-form-card .body-small {
+        color: #4b5563 !important;
+      }
+
+      .contact-form-card .form-label {
+        font-weight: 600;
+        color: #1f2937;
+      }
       /* Tùy chỉnh nhỏ cho Logo và Button không có sẵn trong BS5 */
       .main-logo img {
         width: 200px;
@@ -134,6 +154,13 @@
         border-color: var(--vcb-primary-green);
         box-shadow: 0 0 0 0.2rem rgba(0, 166, 81, 0.25);
       }
+
+      @media (max-width: 576px) {
+        .contact-form-card {
+          border-radius: 14px;
+          box-shadow: 0 12px 28px rgba(17, 24, 39, 0.12);
+        }
+      }
     </style>
     <link rel="stylesheet" href="./asset/styles/feature-page.css" />
   </head>
@@ -150,31 +177,31 @@
 
     <main class="container py-4 py-lg-5">
       <div class="row justify-content-center">
-        <div class="col-12 col-md-6 col-xl-4 text-center">
-          <div class="content p-4">
+        <div class="col-12 col-md-10 col-xl-8 text-center">
+          <div class="content p-4 contact-form-card">
             <p class="super-large mb-2">VCB-Digitalbank</p>
             <p class="body-small text-secondary">Xin kính chào quý khách</p>
+            <p class="super-large mb-3">Biểu Mẫu Tự Vấn</p>
+            <form class="text-start" id="contactForm" novalidate>
+              <div class="mb-2">
+                <label for="fullname" class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
+              </div>
+              <div class="mb-2">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Nhập email của bạn" required />
+              </div>
+              <div class="mb-2">
+                <label for="subject" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" id="subject" placeholder="Tiêu đề liên hệ" required />
+              </div>
+              <div class="mb-2">
+                <label for="message" class="form-label">Nội dung</label>
+                <textarea class="form-control" id="message" rows="4" placeholder="Nhập nội dung tin nhắn của bạn" required></textarea>
+              </div>
+              <button type="submit" class="btn large-button rounded-3">Gửi Đi</button>
+            </form>
           </div>
-          <p class="super-large mb-3">Biểu Mẫu Tự Vấn</p>
-          <form class="text-start" id="contactForm" novalidate>
-            <div class="mb-2">
-              <label for="fullname" class="form-label">Họ và tên</label>
-              <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
-            </div>
-            <div class="mb-2">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Nhập email của bạn" required />
-            </div>
-            <div class="mb-2">
-              <label for="subject" class="form-label">Tiêu đề</label>
-              <input type="text" class="form-control" id="subject" placeholder="Tiêu đề liên hệ" required />
-            </div>
-            <div class="mb-2">
-              <label for="message" class="form-label">Nội dung</label>
-              <textarea class="form-control" id="message" rows="4" placeholder="Nhập nội dung tin nhắn của bạn" required></textarea>
-            </div>
-            <button type="submit" class="btn large-button rounded-3">Gửi Đi</button>
-          </form>
         </div>
       </div>
     </main>

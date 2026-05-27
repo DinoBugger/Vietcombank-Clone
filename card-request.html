@@ -15,24 +15,6 @@
     />
     <link rel="stylesheet" href="./asset/styles/reset.css" />
     <link rel="stylesheet" href="./asset/styles/feature-page.css" />
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-        background: #f7fafc;
-        min-height: 100vh;
-      }
-      .card {
-        width: min(100%, 720px);
-        margin: 24px auto 0;
-      }
-      .label {
-        font-weight: 700;
-        color: #0b3b2e;
-      }
-      .value {
-        font-weight: 600;
-      }
-    </style>
   </head>
   <body class="feature-page">
     <header class="feature-header shadow-sm py-3">
@@ -45,36 +27,36 @@
     </header>
 
     <main class="container py-4 py-lg-5">
-      <div class="card shadow-sm p-4">
+      <div class="card shadow-sm p-4 mx-auto mt-3" style="max-width: 720px">
         <h2 class="mb-3">Yêu cầu làm thẻ vật lý</h2>
 
         <form id="cardForm" class="row g-3">
           <div class="col-12">
-            <label class="form-label">Họ và tên</label>
+            <label class="form-label fw-bold text-dark">Họ và tên</label>
             <input id="fullname" class="form-control" required />
             <div class="invalid-feedback">Vui lòng nhập họ và tên.</div>
           </div>
 
           <div class="col-12">
-            <label class="form-label">Số CMND/CCCD</label>
+            <label class="form-label fw-bold text-dark">Số CMND/CCCD</label>
             <input id="idNumber" class="form-control" required />
             <div class="invalid-feedback">Vui lòng nhập số CMND/CCCD.</div>
           </div>
 
           <div class="col-12">
-            <label class="form-label">Địa chỉ email</label>
+            <label class="form-label fw-bold text-dark">Địa chỉ email</label>
             <input id="email" type="email" class="form-control" required />
             <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
           </div>
 
           <div class="col-12">
-            <label class="form-label">Địa chỉ nhận thẻ</label>
+            <label class="form-label fw-bold text-dark">Địa chỉ nhận thẻ</label>
             <textarea id="address" class="form-control" rows="2" required></textarea>
             <div class="invalid-feedback">Vui lòng nhập địa chỉ nhận thẻ.</div>
           </div>
 
           <div class="col-12">
-            <label class="form-label">Loại thẻ muốn làm</label>
+            <label class="form-label fw-bold text-dark">Loại thẻ muốn làm</label>
             <select id="cardType" class="form-select" required>
               <option value="">-- Chọn loại thẻ --</option>
               <option>Visa</option>
@@ -86,7 +68,7 @@
           </div>
 
           <div class="col-12 d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary" style="width: 50%">Gửi yêu cầu</button>
+            <button type="submit" class="btn btn-primary w-50">Gửi yêu cầu</button>
           </div>
         </form>
 
