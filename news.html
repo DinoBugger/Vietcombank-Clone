@@ -16,6 +16,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./asset/styles/reset.css" />
+    <link rel="stylesheet" href="./asset/styles/feature-page.css" />
 
     <style>
       :root {
@@ -42,38 +43,6 @@
         min-height: 100vh;
         padding-bottom: 1.5rem;
         background: linear-gradient(180deg, rgba(245, 247, 250, 0.85), rgba(245, 247, 250, 0.56));
-      }
-
-      .simple-header {
-        padding-top: 1.15rem;
-      }
-
-      .header-box {
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.86);
-        padding: 0.85rem 1rem;
-      }
-
-      .brand img {
-        width: 168px;
-        max-width: 100%;
-      }
-
-      .btn-home {
-        padding: 0.54rem 1.14rem;
-        border: 1.5px solid #86c9b0;
-        border-radius: 999px;
-        color: var(--vcb-green-dark);
-        background: #fff;
-        font-size: 1.05rem;
-        font-weight: 800;
-        line-height: 1.1;
-      }
-
-      .btn-home:hover {
-        color: var(--vcb-green-dark);
-        background: #f7fffb;
-        border-color: #5bb394;
       }
 
       .hero-banner {
@@ -167,19 +136,6 @@
       }
 
       @media (max-width: 575.98px) {
-        .header-box {
-          padding: 0.7rem 0.78rem;
-        }
-
-        .brand img {
-          width: 142px;
-        }
-
-        .btn-home {
-          font-size: 0.98rem;
-          padding: 0.5rem 1rem;
-        }
-
         .news-item {
           gap: 0.72rem;
           border-radius: 16px;
@@ -206,14 +162,12 @@
 
   <body>
     <div class="page-shell">
-      <header class="simple-header">
-        <div class="container">
-          <div class="header-box d-flex align-items-center justify-content-between gap-3">
-            <a class="brand" href="./index.html">
-              <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" />
-            </a>
-            <a class="btn btn-home" href="./index.html">Ve trang chu</a>
-          </div>
+      <header class="feature-header shadow-sm py-3">
+        <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <a href="./index.html" class="d-inline-flex align-items-center" aria-label="Về trang chủ">
+            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" class="img-fluid feature-logo" />
+          </a>
+          <a class="btn btn-home-white px-4 py-2 shadow-sm" href="./index.html">Về trang chủ</a>
         </div>
       </header>
 

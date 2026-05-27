@@ -17,6 +17,7 @@
     />
 
     <link rel="stylesheet" href="./asset/styles/reset.css" />
+    <link rel="stylesheet" href="./asset/styles/feature-page.css" />
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -24,8 +25,8 @@
         background: #f8fafc;
       }
       .card {
-        max-width: 720px;
-        margin: 40px auto;
+        width: min(100%, 720px);
+        margin: 24px auto 0;
       }
       .label {
         font-weight: 700;
@@ -37,17 +38,17 @@
     </style>
   </head>
 
-  <body>
-    <header class="container pt-4">
-      <div class="d-flex justify-content-between align-items-center">
-        <a href="index.html"><img src="./asset/images/vcb-main-logo.webp" alt="logo" style="width: 180px" /></a>
-        <div>
-          <a href="index.html" class="btn-home" aria-label="Về trang chủ">Về trang chủ</a>
-        </div>
+  <body class="feature-page">
+    <header class="feature-header shadow-sm py-3">
+      <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <a href="index.html" class="d-inline-flex align-items-center" aria-label="Về trang chủ">
+          <img src="./asset/images/vcb-main-logo.webp" alt="logo" class="img-fluid feature-logo" />
+        </a>
+        <a href="index.html" class="btn btn-home-white px-4 py-2 shadow-sm" aria-label="Về trang chủ">Về trang chủ</a>
       </div>
     </header>
 
-    <main class="container">
+    <main class="container py-4 py-lg-5">
       <div class="card shadow-sm p-4">
         <h2 class="mb-3">Hồ sơ của tôi</h2>
 

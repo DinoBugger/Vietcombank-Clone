@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="./asset/styles/reset.css" />
+    <link rel="stylesheet" href="./asset/styles/feature-page.css" />
 
     <style>
       :root {
@@ -46,16 +47,6 @@
         backdrop-filter: blur(1px);
       }
 
-      .topbar {
-        background: rgba(255, 255, 255, 0.86);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      }
-
-      .brand img {
-        width: 180px;
-        max-width: 100%;
-      }
-
       .btn-vcb {
         border-radius: 12px;
         font-weight: 700;
@@ -80,24 +71,6 @@
 
       .btn-vcb-soft:hover {
         background: #f9d7d7;
-      }
-
-      .btn-home-pill {
-        padding: 0.55rem 1.2rem;
-        border: 1.5px solid #86c9b0;
-        border-radius: 999px;
-        color: var(--vcb-green-dark);
-        background: #fff;
-        font-size: 1.1rem;
-        font-weight: 800;
-        line-height: 1.1;
-        box-shadow: none;
-      }
-
-      .btn-home-pill:hover {
-        color: var(--vcb-green-dark);
-        background: #f7fffb;
-        border-color: #5bb394;
       }
 
       .search-panel {
@@ -277,12 +250,12 @@
 
   <body>
     <div class="page-shell">
-      <header class="topbar">
-        <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
-          <a class="brand" href="./index.html">
-            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" />
+      <header class="feature-header shadow-sm py-3">
+        <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <a href="./index.html" class="d-inline-flex align-items-center" aria-label="Về trang chủ">
+            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" class="img-fluid feature-logo" />
           </a>
-          <a href="./index.html" class="btn-home" aria-label="Về trang chủ">Về trang chủ</a>
+          <a href="./index.html" class="btn btn-home-white px-4 py-2 shadow-sm" aria-label="Về trang chủ">Về trang chủ</a>
         </div>
       </header>
 

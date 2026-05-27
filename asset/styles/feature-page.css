@@ -19,9 +19,37 @@ body.feature-page {
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   color: var(--vcb-text);
+  overflow-x: clip;
   background:
     radial-gradient(circle at top left, rgba(0, 166, 81, 0.1), transparent 28%), radial-gradient(circle at top right, rgba(0, 112, 60, 0.08), transparent 25%),
     linear-gradient(180deg, #f8fcf9 0%, #edf6f0 100%);
+}
+
+body.feature-page .container {
+  width: min(100%, 1140px);
+}
+
+.feature-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(0, 112, 60, 0.08);
+}
+
+.feature-logo {
+  width: 180px;
+  height: auto;
+}
+
+.btn-home-white {
+  border: 0;
+  border-radius: 999px;
+  background: var(--vcb-primary-green, #00703c);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.btn-home-white:hover {
+  background: var(--vcb-secondary-green, #00a651);
+  color: #ffffff;
 }
 
 body.feature-page a {
@@ -116,6 +144,14 @@ body.feature-page :is(.main-logo img, .brand-row img) {
 @media (max-width: 575.98px) {
   body.feature-page .feature-shell {
     padding: 16px;
+  }
+
+  body.feature-page .container {
+    width: min(100%, 100%);
+  }
+
+  .feature-logo {
+    width: 150px;
   }
 
   body.feature-page :is(.main-logo img, .brand-row img) {

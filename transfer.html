@@ -69,10 +69,6 @@
         z-index: 1;
       }
 
-      .brand-row img {
-        width: 180px;
-      }
-
       .hero-panel {
         background: var(--bank-surface);
         border: 1px solid var(--bank-border);
@@ -163,10 +159,6 @@
       }
 
       @media (max-width: 575.98px) {
-        .brand-row img {
-          width: 150px;
-        }
-
         .balance-card {
           width: 100%;
           min-width: unset;
@@ -177,12 +169,12 @@
   </head>
   <body class="feature-page">
     <div class="page-shell">
-      <header class="container pt-4 content-layer">
-        <div class="brand-row d-flex flex-wrap justify-content-between align-items-center gap-3">
-          <a href="index.html" aria-label="Về trang chủ">
-            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" />
+      <header class="feature-header shadow-sm py-3 content-layer">
+        <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <a href="index.html" class="d-inline-flex align-items-center" aria-label="Về trang chủ">
+            <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank" class="img-fluid feature-logo" />
           </a>
-          <a href="index.html" class="btn-home" aria-label="Về trang chủ">Về trang chủ</a>
+          <a href="index.html" class="btn btn-home-white px-4 py-2 shadow-sm" aria-label="Về trang chủ">Về trang chủ</a>
         </div>
       </header>
 

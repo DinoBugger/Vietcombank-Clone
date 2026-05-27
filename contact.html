@@ -139,17 +139,17 @@
   </head>
 
   <body class="feature-page">
-    <div class="container min-vh-100 d-flex flex-column">
-      <div class="header d-flex justify-content-between align-items-center pt-5 mb-2">
-        <div class="main-logo">
-          <a href="index.html"><img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank Logo" /></a>
-        </div>
-        <div class="contact text-vcb d-flex flex-column align-items-end">
-          <p class="body-large mb-1">Đường dây nóng</p>
-          <p class="btn-vcb m-0">1900545413</p>
-        </div>
+    <header class="feature-header shadow-sm py-3">
+      <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <a href="index.html" class="d-inline-flex align-items-center" aria-label="Về trang chủ">
+          <img src="./asset/images/vcb-main-logo.webp" alt="Vietcombank Logo" class="img-fluid feature-logo" />
+        </a>
+        <a href="index.html" class="btn btn-home-white px-4 py-2 shadow-sm" aria-label="Về trang chủ">Về trang chủ</a>
       </div>
-      <div class="row flex-grow-1 justify-content-center">
+    </header>
+
+    <main class="container py-4 py-lg-5">
+      <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-xl-4 text-center">
           <div class="content p-4">
             <p class="super-large mb-2">VCB-Digitalbank</p>
@@ -177,7 +177,7 @@
           </form>
         </div>
       </div>
-    </div>
+    </main>
 
     <!-- EmailJS -->
 
