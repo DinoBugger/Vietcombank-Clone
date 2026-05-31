@@ -152,6 +152,10 @@
         background: var(--vcb-green);
       }
 
+      .hero-cta.is-hidden {
+        display: none;
+      }
+
       .hero-cta:hover {
         background: var(--vcb-green-dark);
         color: #fff;
@@ -298,7 +302,7 @@
         <div class="col-12 col-md-6">
           <h1>Ngân hàng số thế hệ mới</h1>
           <p>Mở tài khoản Vietcombank trực tuyến 24/7, chuyển và nhận tiền dễ dàng, nhanh chóng.</p>
-          <a href="./signup.html" class="btn hero-cta">Mở tài khoản ngay <i class="fa-solid fa-arrow-right-long"></i></a>
+          <a href="./signup.html" id="openAccountCta" class="btn hero-cta">Mở tài khoản ngay <i class="fa-solid fa-arrow-right-long"></i></a>
         </div>
       </section>
 
@@ -346,6 +350,7 @@
       const accountName = document.getElementById("accountName");
       const accountBalance = document.getElementById("accountBalance");
       const authActions = document.getElementById("authActions");
+      const openAccountCta = document.getElementById("openAccountCta");
       const mobileAuthActions = document.getElementById("mobileAuthActions");
       const logoutButtons = [document.getElementById("logoutBtn"), document.getElementById("mobileLogoutBtn")];
 
@@ -390,6 +395,7 @@
 
         if (!currentUser) {
           authActions.style.display = "flex";
+          openAccountCta?.classList.remove("is-hidden");
           accountBox.style.display = "none";
           mobileAuthActions.classList.remove("is-visible");
           return;
@@ -401,6 +407,7 @@
         accountBalance.textContent = `Số dư: ${formatBalance(currentUser.balance)}`;
 
         authActions.style.display = "none";
+        openAccountCta?.classList.add("is-hidden");
         accountBox.style.display = "block";
         mobileAuthActions.classList.add("is-visible");
       }
