@@ -139,3 +139,18 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.btn-home,
+.btn-home:hover,
+.btn-home:focus,
+.btn-home:active,
+.btn-home-white,
+.btn-home-white:hover,
+.btn-home-white:focus,
+.btn-home-white:active,
+.home-button,
+.home-button:hover,
+.home-button:focus,
+.home-button:active {
+  color: #ffffff !important;
+}
