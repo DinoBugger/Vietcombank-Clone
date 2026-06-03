@@ -154,55 +154,13 @@
       </section>
     </main>
 
+    <script src="./asset/scripts/util.js"></script>
     <script>
       const balanceEl = document.getElementById("currentBalance");
       const form = document.getElementById("depositForm");
       const elements = form.elements;
       const amountInput = elements.amount;
       const amountError = document.getElementById("amountError");
-
-      function getCurrentUser() {
-        let currentUser = null;
-
-        try {
-          currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-        } catch (error) {
-          currentUser = null;
-        }
-
-        if (!currentUser) {
-          return null;
-        }
-
-        try {
-          const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
-          const freshUser = users.find((user) => user.id === currentUser.id || user.phone === currentUser.phone);
-
-          if (freshUser) {
-            localStorage.setItem("currentUser", JSON.stringify(freshUser));
-            return freshUser;
-          }
-        } catch (error) {
-          return currentUser;
-        }
-
-        return currentUser;
-      }
-
-      function redirectIfNotLoggedIn() {
-        const currentUser = getCurrentUser();
-
-        if (!currentUser) {
-          window.location.replace("./login.html");
-          return null;
-        }
-
-        return currentUser;
-      }
-
-      function formatMoney(amount) {
-        return `${Number(amount).toLocaleString("vi-VN")} VND`;
-      }
 
       function renderBalance() {
         const currentUser = getCurrentUser();
@@ -214,25 +172,12 @@
         balanceEl.textContent = formatMoney(balance);
       }
 
-      function updateStoredUser(nextUser) {
-        const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
-        const updatedUsers = users.map((user) => {
-          if (user.id === nextUser.id || user.phone === nextUser.phone) {
-            return nextUser;
-          }
-          return user;
-        });
-
-        localStorage.setItem("userinfo", JSON.stringify(updatedUsers, null, 2));
-        localStorage.setItem("currentUser", JSON.stringify(nextUser));
-      }
-
       function clearAmountValidity() {
         amountInput.setCustomValidity("");
       }
 
-      // BEGIN of Logic
-      const currentUser = redirectIfNotLoggedIn();
+      // begin logic
+      const currentUser = requireCurrentUser();
       if (currentUser) {
         renderBalance();
       }
@@ -268,7 +213,14 @@
           balance: Number(latestUser.balance || 0) + numericValue,
         };
 
-        updateStoredUser(updatedUser);
+        const updatedUsers = readUsers().map((user) => {
+          if (user.id === updatedUser.id || user.phone === updatedUser.phone) {
+            return updatedUser;
+          }
+          return user;
+        });
+
+        updateStoredUsers(updatedUsers, updatedUser);
         renderBalance();
         amountInput.value = "";
         clearAmountValidity();

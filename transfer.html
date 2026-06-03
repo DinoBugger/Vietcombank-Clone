@@ -258,66 +258,6 @@
 
       let checkedRecipientAccount = "";
 
-      function readUsers() {
-        try {
-          return JSON.parse(localStorage.getItem("userinfo") || "[]");
-        } catch (error) {
-          return [];
-        }
-      }
-
-      function getCurrentUser() {
-        let currentUser = null;
-
-        try {
-          currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-        } catch (error) {
-          currentUser = null;
-        }
-
-        if (!currentUser) {
-          return null;
-        }
-
-        try {
-          const users = readUsers();
-          const freshUser = users.find(
-            (user) =>
-              user.id === currentUser.id ||
-              user.phone === currentUser.phone ||
-              String(user.accountNumber) === String(currentUser.accountNumber),
-          );
-
-          if (freshUser) {
-            localStorage.setItem("currentUser", JSON.stringify(freshUser));
-            return freshUser;
-          }
-        } catch (error) {
-          return currentUser;
-        }
-
-        return currentUser;
-      }
-
-      function requireCurrentUser() {
-        const currentUser = getCurrentUser();
-        if (!currentUser) {
-          window.location.replace("./login.html");
-          return null;
-        }
-        return currentUser;
-      }
-
-      function formatMoney(amount) {
-        const numericAmount = Number(amount || 0);
-        return `${numericAmount.toLocaleString("vi-VN")} VND`;
-      }
-
-      function updateStoredUsers(updatedUsers, nextCurrentUser) {
-        localStorage.setItem("userinfo", JSON.stringify(updatedUsers, null, 2));
-        localStorage.setItem("currentUser", JSON.stringify(nextCurrentUser));
-      }
-
       function renderBalance() {
         const currentUser = requireCurrentUser();
         if (!currentUser) {
@@ -347,11 +287,6 @@
         balanceError.classList.add("d-none");
       }
 
-      function clearFieldValidity() {
-        recipientInput.setCustomValidity("");
-        amountInput.setCustomValidity("");
-      }
-
       function clearRecipientState() {
         checkedRecipientAccount = "";
       }
@@ -363,10 +298,6 @@
         }
 
         return readUsers().find((user) => String(user.accountNumber) === normalizedAccount) || null;
-      }
-
-      function showRecipient(recipient) {
-        return recipient;
       }
 
       function validateRecipientAccount() {
@@ -427,6 +358,7 @@
         return transferAmount;
       }
 
+      // begin logic
       const currentUser = renderBalance();
       if (currentUser) {
         clearRecipientState();
@@ -533,7 +465,7 @@
         const recipientName = transferredRecipient.fullname || "Người nhận";
 
         form.reset();
-        clearFieldValidity();
+        clearFieldValidity(recipientInput, amountInput);
         clearRecipientState();
         alert(`Chuyển tiền thành công ${formatMoney(transferAmount)} cho ${recipientName}.`);
       });

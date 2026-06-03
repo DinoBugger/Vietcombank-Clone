@@ -345,6 +345,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./asset/scripts/util.js"></script>
     <script>
       const accountBox = document.getElementById("accountBox");
       const accountName = document.getElementById("accountName");
@@ -353,42 +354,6 @@
       const openAccountCta = document.getElementById("openAccountCta");
       const mobileAuthActions = document.getElementById("mobileAuthActions");
       const logoutButtons = [document.getElementById("logoutBtn"), document.getElementById("mobileLogoutBtn")];
-
-      function formatBalance(rawBalance) {
-        const numeric = Number(rawBalance);
-        if (Number.isFinite(numeric)) {
-          return `${numeric} vnd`;
-        }
-        return "0 vnd";
-      }
-
-      function getCurrentUser() {
-        let currentUser = null;
-
-        try {
-          currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-        } catch (error) {
-          currentUser = null;
-        }
-
-        if (!currentUser) {
-          return null;
-        }
-
-        try {
-          const users = JSON.parse(localStorage.getItem("userinfo") || "[]");
-          const freshUser = users.find((user) => user.id === currentUser.id || user.phone === currentUser.phone);
-
-          if (freshUser) {
-            localStorage.setItem("currentUser", JSON.stringify(freshUser));
-            return freshUser;
-          }
-        } catch (error) {
-          return currentUser;
-        }
-
-        return currentUser;
-      }
 
       function renderHeaderByAuth() {
         const currentUser = getCurrentUser();
@@ -412,6 +377,7 @@
         mobileAuthActions.classList.add("is-visible");
       }
 
+      // begin logic
       renderHeaderByAuth();
 
       logoutButtons.forEach((button) => {
