@@ -75,20 +75,18 @@
         z-index: 1;
         margin: 0;
         padding: 0.4rem 1rem;
-        color: var(--vcb-green);
+        color: var(--vcb-green-dark);
         font-size: clamp(1.25rem, 2.6vw, 2.25rem);
         font-weight: 800;
         text-align: center;
         letter-spacing: 0.03em;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
+        font-style: italic;
       }
 
       .news-grid {
         margin-top: 1rem;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.9rem;
       }
 
       .news-item {
@@ -97,20 +95,24 @@
         border-radius: 18px;
         background: var(--vcb-surface-card);
         padding: 0.55rem;
+        align-items: stretch;
       }
 
+      /* Make thumbnail and content stretch to fill the card height */
       .news-thumb {
         width: 132px;
         min-width: 132px;
-        height: 115px;
+        height: auto;
         border-radius: 15px;
         overflow: hidden;
+        align-self: stretch;
       }
 
       .news-thumb img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
       }
 
       .news-content {
@@ -118,6 +120,7 @@
         min-width: 0;
         flex-direction: column;
         gap: 0.6rem;
+        flex: 1 1 auto;
       }
 
       .news-title {
@@ -159,10 +162,6 @@
       }
 
       @media (max-width: 991.98px) {
-        .news-grid {
-          grid-template-columns: 1fr;
-        }
-
         .hero-banner img {
           height: clamp(130px, 28vw, 180px);
         }
@@ -178,7 +177,7 @@
         .news-thumb {
           width: 104px;
           min-width: 104px;
-          height: 94px;
+          height: auto;
           border-radius: 12px;
         }
 
@@ -210,87 +209,99 @@
           <h1 class="hero-banner-title">Tin tức và sự kiện</h1>
         </section>
 
-        <section class="news-grid" aria-label="Danh sach tin tuc">
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+        <section class="row g-3 news-grid" aria-label="Danh sach tin tuc">
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>
 
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news2.JPG" alt="Thong bao Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news2.JPG" alt="Thong bao Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>
 
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>
 
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>
 
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>
 
-          <article class="news-item">
-            <div class="news-thumb">
-              <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
-            </div>
-            <div class="news-content">
-              <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
-              <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
-              <div class="news-meta">
-                <span>18/05/26 16:10</span>
-                <a class="news-link" href="#">Xem chi tiet</a>
+          <article class="col-12 col-xl-6">
+            <div class="news-item">
+              <div class="news-thumb">
+                <img src="./asset/images/vcb-news1.jpg" alt="Tin tuc Vietcombank" />
+              </div>
+              <div class="news-content">
+                <h2 class="news-title">Vietcombank khang dinh vi the dan dau voi 7 giai thuong quan trong tai The Asian Banker Summit 2026</h2>
+                <p class="news-desc">Trong khuon kho Hoi nghi The Asian Banker Summit 2026 voi chu de "Transaction Fainance Re-invented ..."</p>
+                <div class="news-meta">
+                  <span>18/05/26 16:10</span>
+                  <a class="news-link" href="#">Xem chi tiet</a>
+                </div>
               </div>
             </div>
           </article>

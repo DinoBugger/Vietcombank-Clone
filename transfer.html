@@ -29,8 +29,7 @@
         min-height: 100vh;
         color: var(--bank-ink);
         background:
-          radial-gradient(circle at top left, rgba(6, 95, 70, 0.16), transparent 28%),
-          radial-gradient(circle at top right, rgba(15, 118, 110, 0.14), transparent 26%),
+          radial-gradient(circle at top left, rgba(6, 95, 70, 0.16), transparent 28%), radial-gradient(circle at top right, rgba(15, 118, 110, 0.14), transparent 26%),
           linear-gradient(180deg, #effaf7 0%, #f8fbfb 50%, #eef6f4 100%);
       }
 
@@ -100,8 +99,8 @@
         border-radius: 22px;
         padding: 1.15rem 1.25rem;
         color: #fff;
-        background: linear-gradient(135deg, var(--bank-green-deep), var(--bank-green));
-        box-shadow: 0 18px 42px rgba(6, 78, 59, 0.26);
+        background: var(--vcb-primary-green);
+        box-shadow: var(--vcb-btn-shadow);
       }
 
       .balance-label {
@@ -182,13 +181,15 @@
         <div class="row justify-content-center">
           <div class="col-12 col-xl-10">
             <section class="hero-panel p-4 p-md-5">
-              <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
-                <div>
+              <div class="row align-items-start g-3 mb-4">
+                <div class="col-12 col-md">
                   <div class="eyebrow mb-3">Chuyển tiền nội bộ</div>
                 </div>
-                <div class="balance-card">
-                  <div class="balance-label">Số dư hiện tại</div>
-                  <div id="currentBalance" class="balance-value">0 VND</div>
+                <div class="col-12 col-md-auto ms-md-auto">
+                  <div class="balance-card">
+                    <div class="balance-label">Số dư hiện tại</div>
+                    <div id="currentBalance" class="balance-value">0 VND</div>
+                  </div>
                 </div>
               </div>
 
@@ -196,48 +197,24 @@
                 <div class="col-12">
                   <label for="recipientAccount" class="form-label field-label">Số tài khoản người nhận</label>
                   <div class="input-group input-group-lg">
-                    <input
-                      id="recipientAccount"
-                      class="form-control"
-                      type="text"
-                      inputmode="numeric"
-                      autocomplete="off"
-                      placeholder="Nhập số tài khoản người nhận"
-                      maxlength="20"
-                      required
-                    />
-                    <button id="checkRecipientBtn" class="btn btn-outline-success btn-bank" type="button">
-                      Kiểm tra
-                    </button>
+                    <input id="recipientAccount" class="form-control" type="text" inputmode="numeric" autocomplete="off" placeholder="Nhập số tài khoản người nhận" maxlength="20" required />
+                    <button id="checkRecipientBtn" class="btn btn-outline-success btn-bank" type="button">Kiểm tra</button>
                   </div>
-                  <div id="recipientStatus" class="recipient-status form-text mt-2 text-muted">
-                    Có thể kiểm tra nhanh số tài khoản trước khi chuyển.
-                  </div>
+                  <div id="recipientStatus" class="recipient-status form-text mt-2 text-muted">Có thể kiểm tra nhanh số tài khoản trước khi chuyển.</div>
                 </div>
 
                 <div class="col-12">
                   <label for="amount" class="form-label field-label">Số tiền muốn chuyển</label>
-                  <input
-                    id="amount"
-                    class="form-control form-control-lg"
-                    type="number"
-                    inputmode="numeric"
-                    min="1"
-                    step="1"
-                    placeholder="Ví dụ: 500000"
-                    required
-                  />
+                  <input id="amount" class="form-control form-control-lg" type="number" inputmode="numeric" min="1" step="1" placeholder="Ví dụ: 500000" required />
                   <small id="amountError" class="text-danger d-none mt-2">Vui lòng nhập số tiền là số nguyên dương.</small>
                   <small id="balanceError" class="text-danger d-none mt-2">Số dư không đủ để thực hiện giao dịch.</small>
                 </div>
 
                 <div class="col-12 d-flex flex-wrap gap-2">
                   <button type="submit" class="btn btn-bank btn-bank-primary btn-lg px-4">Xác nhận chuyển tiền</button>
-                  <button id="resetBtn" type="button" class="btn btn-outline-secondary btn-bank btn-lg px-4">
-                    Nhập lại
-                  </button>
+                  <button id="resetBtn" type="button" class="btn btn-outline-secondary btn-bank btn-lg px-4">Nhập lại</button>
                 </div>
-              </div>
+              </form>
             </section>
           </div>
         </div>
@@ -424,11 +401,7 @@
 
         const users = readUsers();
         const updatedUsers = users.map((user) => {
-          if (
-            user.id === latestUser.id ||
-            user.phone === latestUser.phone ||
-            String(user.accountNumber) === String(latestUser.accountNumber)
-          ) {
+          if (user.id === latestUser.id || user.phone === latestUser.phone || String(user.accountNumber) === String(latestUser.accountNumber)) {
             return {
               ...user,
               balance: Number(user.balance || 0) - transferAmount,
@@ -445,12 +418,7 @@
           return user;
         });
 
-        const updatedSender = updatedUsers.find(
-          (user) =>
-            user.id === latestUser.id ||
-            user.phone === latestUser.phone ||
-            String(user.accountNumber) === String(latestUser.accountNumber),
-        );
+        const updatedSender = updatedUsers.find((user) => user.id === latestUser.id || user.phone === latestUser.phone || String(user.accountNumber) === String(latestUser.accountNumber));
 
         if (!updatedSender) {
           window.location.replace("./login.html");
@@ -460,8 +428,7 @@
         updateStoredUsers(updatedUsers, updatedSender);
         balanceEl.textContent = formatMoney(updatedSender.balance);
 
-        const transferredRecipient =
-          updatedUsers.find((user) => String(user.accountNumber) === String(recipient.accountNumber)) || recipient;
+        const transferredRecipient = updatedUsers.find((user) => String(user.accountNumber) === String(recipient.accountNumber)) || recipient;
         const recipientName = transferredRecipient.fullname || "Người nhận";
 
         form.reset();

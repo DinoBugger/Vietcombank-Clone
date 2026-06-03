@@ -47,6 +47,10 @@ body.auth-page {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 18px 40px rgba(16, 44, 29, 0.12);
   backdrop-filter: blur(10px);
+  /* Limit height to viewport to prevent page overflow on small screens */
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .auth-form .form-control {
@@ -75,7 +79,7 @@ body.auth-page {
 }
 /* Typography helpers kept minimal; prefer Bootstrap utility classes in markup */
 .super-large {
-  font-size: 30px;
+  font-size: 25px;
   line-height: 1;
   font-weight: 800;
 }

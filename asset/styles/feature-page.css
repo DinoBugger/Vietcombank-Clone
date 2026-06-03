@@ -25,10 +25,6 @@ body.feature-page {
     linear-gradient(180deg, #f8fcf9 0%, #edf6f0 100%);
 }
 
-body.feature-page .container {
-  width: min(100%, 1140px);
-}
-
 .feature-header {
   background-color: #ffffff;
   border-bottom: 1px solid rgba(0, 112, 60, 0.08);
