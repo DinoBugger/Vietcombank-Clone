@@ -91,7 +91,7 @@ function formatMoney(amount, currency = "VND", locale = "vi-VN") {
 function clearFieldValidity(...inputs) {
   inputs.forEach((input) => {
     if (input) {
-      input.setCustomValidity("");
+      input.removeAttribute("aria-invalid");
     }
   });
 }
@@ -100,15 +100,25 @@ function clearFieldValidity(...inputs) {
 function clearFieldMessages(...elements) {
   elements.forEach((element) => {
     if (element) {
+      element.textContent = "";
       element.classList.add("d-none");
     }
   });
 }
 
+function showFieldMessage(element, message) {
+  if (!element) {
+    return;
+  }
+
+  element.textContent = message;
+  element.classList.remove("d-none");
+}
+
 function syncBasicValidity(rules) {
-  rules.forEach(({ input, invalid, message }) => {
+  rules.forEach(({ input, invalid }) => {
     if (input) {
-      input.setCustomValidity(invalid ? message : "");
+      input.toggleAttribute("aria-invalid", Boolean(invalid));
     }
   });
 }

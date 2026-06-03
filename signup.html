@@ -47,6 +47,7 @@
             <div class="mb-1">
               <label for="fullname" class="form-label">Họ và tên</label>
               <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
+              <small class="text-danger d-none" id="fullnameError">Vui lòng nhập họ và tên</small>
             </div>
             <div class="mb-1">
               <label for="phone" class="form-label">Số điện thoại (10 số)</label>
@@ -88,6 +89,7 @@
       const passwordInput = elements.password;
       const pinInput = elements.pin;
       const accountInput = elements.accountNumber;
+      const fullnameError = document.getElementById("fullnameError");
       const phoneError = document.getElementById("phoneError");
       const phoneExistsError = document.getElementById("phoneExistsError");
       const passwordError = document.getElementById("passwordError");
@@ -95,37 +97,54 @@
       const accountError = document.getElementById("accountError");
       const accountExistsError = document.getElementById("accountExistsError");
 
+      function validateSignupInputs() {
+        const fullnameValue = fullnameInput.value.trim();
+        const phoneValue = phoneInput.value.trim();
+        const passwordValue = passwordInput.value;
+        const pinValue = pinInput.value.trim();
+        const accountValue = accountInput.value.trim();
+
+        if (!fullnameValue) {
+          showFieldMessage(fullnameError, "Vui lòng nhập họ và tên");
+          return false;
+        }
+
+        if (!/^[0-9]{10}$/.test(phoneValue)) {
+          showFieldMessage(phoneError, "Số điện thoại phải có đúng 10 số");
+          return false;
+        }
+
+        if (!passwordValue || passwordValue.length < 6) {
+          showFieldMessage(passwordError, "Mật khẩu phải có ít nhất 6 kí tự");
+          return false;
+        }
+
+        if (!/^[0-9]{6}$/.test(pinValue)) {
+          showFieldMessage(pinError, "Mã PIN phải có đúng 6 số");
+          return false;
+        }
+
+        if (!/^[0-9]{8,}$/.test(accountValue)) {
+          showFieldMessage(accountError, "Số tài khoản phải có ít nhất 8 chữ số");
+          return false;
+        }
+
+        return true;
+      }
+
+      fullnameInput.addEventListener("input", () => clearFieldMessages(fullnameError));
+      phoneInput.addEventListener("input", () => clearFieldMessages(phoneError, phoneExistsError));
+      passwordInput.addEventListener("input", () => clearFieldMessages(passwordError));
+      pinInput.addEventListener("input", () => clearFieldMessages(pinError));
+      accountInput.addEventListener("input", () => clearFieldMessages(accountError, accountExistsError));
+
       // ======================== BEGIN
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        clearFieldMessages(phoneError, phoneExistsError, passwordError, pinError, accountError, accountExistsError);
-        clearFieldValidity(phoneInput, passwordInput, pinInput, accountInput);
-        syncBasicValidity([
-          {
-            input: phoneInput,
-            invalid: phoneInput.validity.valueMissing || phoneInput.validity.patternMismatch,
-            message: "Số điện thoại phải có đúng 10 số",
-          },
-          {
-            input: passwordInput,
-            invalid: passwordInput.validity.valueMissing || passwordInput.validity.tooShort,
-            message: "Mật khẩu phải có ít nhất 6 kí tự",
-          },
-          {
-            input: pinInput,
-            invalid: pinInput.validity.valueMissing || pinInput.validity.patternMismatch,
-            message: "Mã PIN phải có đúng 6 số",
-          },
-          {
-            input: accountInput,
-            invalid: accountInput.validity.valueMissing || accountInput.validity.patternMismatch,
-            message: "Số tài khoản phải có ít nhất 8 chữ số",
-          },
-        ]);
+        clearFieldMessages(fullnameError, phoneError, phoneExistsError, passwordError, pinError, accountError, accountExistsError);
 
-        if (!form.checkValidity()) {
-          form.reportValidity();
+        if (!validateSignupInputs()) {
           return;
         }
 
@@ -137,15 +156,12 @@
         const accountTaken = users.some((user) => String(user.accountNumber) === String(accountValue));
 
         if (phoneTaken) {
-          phoneExistsError.classList.remove("d-none");
+          showFieldMessage(phoneExistsError, "Số điện thoại này đã được sử dụng");
+          return;
         }
 
         if (accountTaken) {
-          accountExistsError.classList.remove("d-none");
-        }
-
-        if (!form.checkValidity()) {
-          form.reportValidity();
+          showFieldMessage(accountExistsError, "Số tài khoản này đã tồn tại");
           return;
         }
 

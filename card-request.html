@@ -32,29 +32,29 @@
           <div class="card shadow-sm p-4 mt-3 w-100">
             <h1 class="mb-3 text-center">Yêu cầu làm thẻ vật lý</h1>
 
-            <form id="cardForm" class="row g-3">
+            <form id="cardForm" class="row g-3" novalidate>
               <div class="col-12">
                 <label class="form-label fw-bold text-dark">Họ và tên</label>
                 <input id="fullname" class="form-control" required />
-                <div class="invalid-feedback">Vui lòng nhập họ và tên.</div>
+                <small class="text-danger d-none mt-2" id="fullnameError">Vui lòng nhập họ và tên.</small>
               </div>
 
               <div class="col-12">
                 <label class="form-label fw-bold text-dark">Số CMND/CCCD</label>
                 <input id="idNumber" class="form-control" required />
-                <div class="invalid-feedback">Vui lòng nhập số CMND/CCCD.</div>
+                <small class="text-danger d-none mt-2" id="idNumberError">Vui lòng nhập số CMND/CCCD.</small>
               </div>
 
               <div class="col-12">
                 <label class="form-label fw-bold text-dark">Địa chỉ email</label>
                 <input id="email" type="email" class="form-control" required />
-                <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
+                <small class="text-danger d-none mt-2" id="emailError">Vui lòng nhập email hợp lệ.</small>
               </div>
 
               <div class="col-12">
                 <label class="form-label fw-bold text-dark">Địa chỉ nhận thẻ</label>
                 <textarea id="address" class="form-control" rows="2" required></textarea>
-                <div class="invalid-feedback">Vui lòng nhập địa chỉ nhận thẻ.</div>
+                <small class="text-danger d-none mt-2" id="addressError">Vui lòng nhập địa chỉ nhận thẻ.</small>
               </div>
 
               <div class="col-12">
@@ -66,7 +66,7 @@
                   <option>Thẻ ghi nợ</option>
                   <option>Thẻ tín dụng</option>
                 </select>
-                <div class="invalid-feedback">Vui lòng chọn loại thẻ.</div>
+                <small class="text-danger d-none mt-2" id="cardTypeError">Vui lòng chọn loại thẻ.</small>
               </div>
 
               <div class="col-12 d-grid">
@@ -91,6 +91,11 @@
       const addressInput = elements.address;
       const cardTypeInput = elements.cardType;
       const submitButton = form.querySelector("button[type='submit']");
+      const fullnameError = document.getElementById("fullnameError");
+      const idNumberError = document.getElementById("idNumberError");
+      const emailError = document.getElementById("emailError");
+      const addressError = document.getElementById("addressError");
+      const cardTypeError = document.getElementById("cardTypeError");
 
       // Lấy thông số để config mail js
       const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
@@ -105,15 +110,57 @@
         console.warn("EmailJS not configured - will fallback to mailto");
       }
 
+      fullnameInput.addEventListener("input", () => clearFieldMessages(fullnameError));
+      idNumberInput.addEventListener("input", () => clearFieldMessages(idNumberError));
+      emailInput.addEventListener("input", () => clearFieldMessages(emailError));
+      addressInput.addEventListener("input", () => clearFieldMessages(addressError));
+      cardTypeInput.addEventListener("change", () => clearFieldMessages(cardTypeError));
+
       function addDays(date, days) {
         return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+      }
+
+      function validateCardRequestForm() {
+        const fullname = fullnameInput.value.trim();
+        const idNumber = idNumberInput.value.trim();
+        const email = emailInput.value.trim();
+        const address = addressInput.value.trim();
+        const cardType = cardTypeInput.value;
+
+        if (!fullname) {
+          showFieldMessage(fullnameError, "Vui lòng nhập họ và tên.");
+          return false;
+        }
+
+        if (!idNumber) {
+          showFieldMessage(idNumberError, "Vui lòng nhập số CMND/CCCD.");
+          return false;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showFieldMessage(emailError, "Vui lòng nhập email hợp lệ.");
+          return false;
+        }
+
+        if (!address) {
+          showFieldMessage(addressError, "Vui lòng nhập địa chỉ nhận thẻ.");
+          return false;
+        }
+
+        if (!cardType) {
+          showFieldMessage(cardTypeError, "Vui lòng chọn loại thẻ.");
+          return false;
+        }
+
+        return true;
       }
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        if (!form.checkValidity()) {
-          form.reportValidity();
+        clearFieldMessages(fullnameError, idNumberError, emailError, addressError, cardTypeError);
+
+        if (!validateCardRequestForm()) {
           return;
         }
 

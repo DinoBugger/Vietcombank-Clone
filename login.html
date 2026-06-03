@@ -72,27 +72,38 @@
       const phoneError = document.getElementById("phoneError");
       const passwordError = document.getElementById("passwordError");
 
+      function validatePhone() {
+        const phoneValue = phoneInput.value.trim();
+
+        if (!/^[0-9]{10}$/.test(phoneValue)) {
+          showFieldMessage(phoneError, "Số điện thoại phải có đúng 10 số");
+          return false;
+        }
+
+        return true;
+      }
+
+      function validatePassword() {
+        const passwordValue = passwordInput.value;
+
+        if (!passwordValue || passwordValue.length < 6) {
+          showFieldMessage(passwordError, "Mật khẩu phải có ít nhất 6 kí tự");
+          return false;
+        }
+
+        return true;
+      }
+
+      phoneInput.addEventListener("input", () => clearFieldMessages(phoneError));
+      passwordInput.addEventListener("input", () => clearFieldMessages(passwordError));
+
       // ================ BEGIN
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         clearFieldMessages(phoneError, passwordError);
-        clearFieldValidity(phoneInput, passwordInput);
-        syncBasicValidity([
-          {
-            input: phoneInput,
-            invalid: phoneInput.validity.valueMissing || phoneInput.validity.patternMismatch,
-            message: "Số điện thoại phải có đúng 10 số",
-          },
-          {
-            input: passwordInput,
-            invalid: passwordInput.validity.valueMissing || passwordInput.validity.tooShort,
-            message: "Mật khẩu phải có ít nhất 6 kí tự",
-          },
-        ]);
 
-        if (!form.checkValidity()) {
-          form.reportValidity();
+        if (!validatePhone() || !validatePassword()) {
           return;
         }
 

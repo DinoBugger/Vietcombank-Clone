@@ -186,18 +186,22 @@
               <div class="mb-2">
                 <label for="fullname" class="form-label">Họ và tên</label>
                 <input type="text" class="form-control" id="fullname" placeholder="Họ và tên của bạn" required />
+                <small class="text-danger d-none mt-2" id="fullnameError">Vui lòng nhập họ và tên.</small>
               </div>
               <div class="mb-2">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Nhập email của bạn" required />
+                <small class="text-danger d-none mt-2" id="emailError">Vui lòng nhập email hợp lệ.</small>
               </div>
               <div class="mb-2">
                 <label for="subject" class="form-label">Tiêu đề</label>
                 <input type="text" class="form-control" id="subject" placeholder="Tiêu đề liên hệ" required />
+                <small class="text-danger d-none mt-2" id="subjectError">Vui lòng nhập tiêu đề.</small>
               </div>
               <div class="mb-2">
                 <label for="message" class="form-label">Nội dung</label>
                 <textarea class="form-control" id="message" rows="4" placeholder="Nhập nội dung tin nhắn của bạn" required></textarea>
+                <small class="text-danger d-none mt-2" id="messageError">Vui lòng nhập nội dung liên hệ.</small>
               </div>
               <button type="submit" class="btn large-button rounded-3">Gửi Đi</button>
             </form>
@@ -220,6 +224,10 @@
         const subjectInput = elements.subject;
         const messageInput = elements.message;
         const submitButton = form.querySelector("button[type='submit']");
+        const fullnameError = document.getElementById("fullnameError");
+        const emailError = document.getElementById("emailError");
+        const subjectError = document.getElementById("subjectError");
+        const messageError = document.getElementById("messageError");
 
         // Lấy thông số để config mail js
         const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
@@ -234,11 +242,46 @@
           console.warn("EmailJS not configured - will fallback to mailto");
         }
 
+        fullnameInput.addEventListener("input", () => clearFieldMessages(fullnameError));
+        emailInput.addEventListener("input", () => clearFieldMessages(emailError));
+        subjectInput.addEventListener("input", () => clearFieldMessages(subjectError));
+        messageInput.addEventListener("input", () => clearFieldMessages(messageError));
+
+        function validateContactForm() {
+          const nameValue = fullnameInput.value.trim();
+          const emailValue = emailInput.value.trim();
+          const subjectValue = subjectInput.value.trim();
+          const messageValue = messageInput.value.trim();
+
+          if (!nameValue) {
+            showFieldMessage(fullnameError, "Vui lòng nhập họ và tên.");
+            return false;
+          }
+
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+            showFieldMessage(emailError, "Vui lòng nhập email hợp lệ.");
+            return false;
+          }
+
+          if (!subjectValue) {
+            showFieldMessage(subjectError, "Vui lòng nhập tiêu đề.");
+            return false;
+          }
+
+          if (!messageValue) {
+            showFieldMessage(messageError, "Vui lòng nhập nội dung liên hệ.");
+            return false;
+          }
+
+          return true;
+        }
+
         form.addEventListener("submit", (e) => {
           e.preventDefault();
 
-          if (!form.checkValidity()) {
-            form.reportValidity();
+          clearFieldMessages(fullnameError, emailError, subjectError, messageError);
+
+          if (!validateContactForm()) {
             return;
           }
 

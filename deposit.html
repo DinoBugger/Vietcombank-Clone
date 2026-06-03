@@ -161,7 +161,7 @@
 
       function renderBalance() {
         const latestUser = getCurrentUser() || currentUser;
-        const balance = formatMoney(latestUser.balance || 0);
+        const balance = Number(latestUser.balance || 0);
         balanceEl.textContent = formatMoney(balance);
       }
 
@@ -169,7 +169,6 @@
       renderBalance();
 
       amountInput.addEventListener("input", () => {
-        clearFieldValidity(amountInput);
         clearFieldMessages(amountError);
       });
 
@@ -179,7 +178,6 @@
 
         // Làm sạch trạng thái lỗi cũ trước khi thẩm định dữ liệu mới
         clearFieldMessages(amountError);
-        clearFieldValidity(amountInput);
 
         const rawValue = amountInput.value.trim();
         const numericValue = Number(rawValue);
@@ -188,9 +186,7 @@
         const isValidAmount = rawValue !== "" && Number.isFinite(numericValue) && numericValue > 0 && /^\d+(\.\d+)?$/.test(rawValue);
 
         if (!isValidAmount) {
-          amountInput.setCustomValidity("Số tiền không hợp lệ. Vui lòng nhập số dương và không để trống.");
-          amountInput.reportValidity();
-          amountError.classList.remove("d-none");
+          showFieldMessage(amountError, "Số tiền không hợp lệ. Vui lòng nhập số dương và không để trống.");
           return;
         }
 
@@ -218,7 +214,7 @@
 
         renderBalance();
         form.reset();
-        clearFieldValidity(amountInput);
+        clearFieldMessages(amountError);
 
         alert(`Nạp tiền thành công: ${formatMoney(numericValue)}`);
       });
