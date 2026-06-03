@@ -364,37 +364,36 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.getElementById("cardSearch");
-        const clearButton = document.getElementById("clearSearch");
-        const resultCount = document.getElementById("resultCount");
-        const emptyState = document.getElementById("emptyState");
-        const cards = Array.from(document.querySelectorAll("[data-card-name]"));
+      const searchInput = document.getElementById("cardSearch");
+      const clearButton = document.getElementById("clearSearch");
+      const resultCount = document.getElementById("resultCount");
+      const emptyState = document.getElementById("emptyState");
+      const cards = Array.from(document.querySelectorAll("[data-card-name]"));
 
-        function updateCards() {
-          const keyword = searchInput.value.trim().toLowerCase();
-          let visibleCount = 0;
+      function updateCards() {
+        const keyword = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
 
-          cards.forEach((card) => {
-            const name = card.dataset.cardName || "";
-            const matched = keyword === "" || name.includes(keyword);
-            card.classList.toggle("d-none", !matched);
-            if (matched) visibleCount += 1;
-          });
-
-          resultCount.textContent = `${visibleCount} thẻ hiển thị`;
-          emptyState.classList.toggle("d-none", visibleCount !== 0);
-        }
-
-        searchInput.addEventListener("input", updateCards);
-        clearButton.addEventListener("click", () => {
-          searchInput.value = "";
-          searchInput.focus();
-          updateCards();
+        cards.forEach((card) => {
+          // gọi data-card-name
+          const name = card.dataset.cardName || "";
+          const matched = keyword === "" || name.includes(keyword);
+          card.classList.toggle("d-none", !matched);
+          if (matched) visibleCount += 1;
         });
 
+        resultCount.textContent = `${visibleCount} thẻ hiển thị`;
+        emptyState.classList.toggle("d-none", visibleCount !== 0);
+      }
+
+      searchInput.addEventListener("input", updateCards);
+      clearButton.addEventListener("click", () => {
+        searchInput.value = "";
+        searchInput.focus();
         updateCards();
       });
+
+      updateCards();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

@@ -64,6 +64,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./asset/scripts/util.js"></script>
     <script>
+      // ============= PREPARATION
       const form = document.getElementById("loginForm");
       const elements = form.elements;
       const phoneInput = elements.phone;
@@ -71,7 +72,7 @@
       const phoneError = document.getElementById("phoneError");
       const passwordError = document.getElementById("passwordError");
 
-      // begin logic
+      // ================ BEGIN
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 

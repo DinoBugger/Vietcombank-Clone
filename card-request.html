@@ -83,98 +83,83 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="config.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("cardForm");
-        const elements = form.elements;
-        const fullnameInput = elements.fullname;
-        const idNumberInput = elements.idNumber;
-        const emailInput = elements.email;
-        const addressInput = elements.address;
-        const cardTypeInput = elements.cardType;
-        const submitButton = form.querySelector("button[type='submit']");
+      const form = document.getElementById("cardForm");
+      const elements = form.elements;
+      const fullnameInput = elements.fullname;
+      const idNumberInput = elements.idNumber;
+      const emailInput = elements.email;
+      const addressInput = elements.address;
+      const cardTypeInput = elements.cardType;
+      const submitButton = form.querySelector("button[type='submit']");
 
-        const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
+      // Lấy thông số để config mail js
+      const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
 
+      if (emailJsReady) {
+        try {
+          emailjs.init(EMAIL_PUBLIC_KEY);
+        } catch (err) {
+          console.warn("EmailJS init failed", err);
+        }
+      } else {
+        console.warn("EmailJS not configured - will fallback to mailto");
+      }
+
+      function addDays(date, days) {
+        return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const fullname = fullnameInput.value.trim();
+        const idNumber = idNumberInput.value.trim();
+        const email = emailInput.value.trim();
+        const address = addressInput.value.trim();
+        const cardType = cardTypeInput.value;
+
+        const deliveryDate = addDays(new Date(), 2);
+        const deliveryStr = deliveryDate.toLocaleString();
+
+        const title = `Yêu cầu làm thẻ vật lý - ${cardType}`;
+        const message = `Họ và tên: ${fullname}\nSố CMND/CCCD: ${idNumber}\nĐịa chỉ nhận thẻ: ${address}\nLoại thẻ: ${cardType}\nNgày giao dự kiến: ${deliveryStr}`;
+
+        // if EmailJS configured, send via EmailJS
         if (emailJsReady) {
-          try {
-            emailjs.init(EMAIL_PUBLIC_KEY);
-          } catch (err) {
-            console.warn("EmailJS init failed", err);
-          }
-        } else {
-          console.warn("EmailJS not configured - will fallback to mailto");
+          const params = {
+            name: fullname,
+            time: new Date().toLocaleString("vi-VN"),
+            email: email,
+            title: title,
+            message: message,
+          };
+
+          submitButton.disabled = true;
+          submitButton.textContent = "Đang gửi...";
+
+          emailjs
+            .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, params)
+            .then(
+              (response) => {
+                alert("Yêu cầu đã được gửi thành công!");
+                form.reset();
+              },
+              (error) => {
+                alert("Gửi thất bại: " + (error.text || error.message || "Lỗi"));
+              },
+            )
+            .finally(() => {
+              submitButton.disabled = false;
+              submitButton.textContent = "Gửi yêu cầu";
+            });
+
+          return;
         }
-
-        function addDays(date, days) {
-          return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
-        }
-
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-
-          if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-          }
-
-          const fullname = fullnameInput.value.trim();
-          const idNumber = idNumberInput.value.trim();
-          const email = emailInput.value.trim();
-          const address = addressInput.value.trim();
-          const cardType = cardTypeInput.value;
-
-          const deliveryDate = addDays(new Date(), 2);
-          const deliveryStr = deliveryDate.toLocaleString();
-
-          const title = `Yêu cầu làm thẻ vật lý - ${cardType}`;
-          const message = `Họ và tên: ${fullname}\nSố CMND/CCCD: ${idNumber}\nĐịa chỉ nhận thẻ: ${address}\nLoại thẻ: ${cardType}\nNgày giao dự kiến: ${deliveryStr}`;
-
-          // if EmailJS configured, send via EmailJS
-          if (emailJsReady) {
-            const params = {
-              name: fullname,
-              time: new Date().toLocaleString("vi-VN"),
-              email: email,
-              title: title,
-              message: message,
-            };
-
-            submitButton.disabled = true;
-            submitButton.textContent = "Đang gửi...";
-
-            emailjs
-              .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, params)
-              .then(
-                (response) => {
-                  alert("Yêu cầu đã được gửi thành công!");
-                  form.reset();
-                },
-                (error) => {
-                  alert("Gửi thất bại: " + (error.text || error.message || "Lỗi"));
-                },
-              )
-              .finally(() => {
-                submitButton.disabled = false;
-                submitButton.textContent = "Gửi yêu cầu";
-              });
-
-            return;
-          }
-
-          // fallback to mailto when EmailJS not configured
-          const subject = `Yêu cầu làm thẻ vật lý - ${fullname}`;
-          const body =
-            `Yêu cầu làm thẻ vật lý\r\n\r\n` +
-            `Họ và tên: ${fullname}\r\n` +
-            `Số CMND/CCCD: ${idNumber}\r\n` +
-            `Email: ${email}\r\n` +
-            `Địa chỉ nhận thẻ: ${address}\r\n` +
-            `Loại thẻ: ${cardType}\r\n` +
-            `Ngày giao dự kiến: ${deliveryStr}\r\n`;
-
-          const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-          window.location.href = mailto;
-        });
       });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -137,7 +137,7 @@
               <div class="mb-3">
                 <label for="amount" class="form-label">Số tiền muốn nạp</label>
                 <input type="text" class="form-control" id="amount" inputmode="decimal" placeholder="Ví dụ: 500000" autocomplete="off" />
-                <small id="amountError" class="text-danger d-none">Số tiền không hợp lệ. Vui lòng nhập số dương và không để trống.</small>
+                <small id="amountError" class="text-danger d-none mt-2">Số tiền không hợp lệ. Vui lòng nhập số dương và không để trống.</small>
               </div>
 
               <button type="submit" class="btn btn-deposit w-100">Nạp tiền</button>
@@ -149,41 +149,42 @@
 
     <script src="./asset/scripts/util.js"></script>
     <script>
+      const currentUser = requireCurrentUser();
+      if (!currentUser) {
+        throw new Error("Yêu cầu đăng nhập.");
+      }
+
       const balanceEl = document.getElementById("currentBalance");
       const form = document.getElementById("depositForm");
-      const elements = form.elements;
-      const amountInput = elements.amount;
+      const amountInput = form.elements.amount;
       const amountError = document.getElementById("amountError");
 
       function renderBalance() {
-        const currentUser = getCurrentUser();
-        if (!currentUser) {
-          return;
-        }
-
-        const balance = Number(currentUser.balance || 0);
+        const latestUser = getCurrentUser() || currentUser;
+        const balance = formatMoney(latestUser.balance || 0);
         balanceEl.textContent = formatMoney(balance);
       }
 
-      function clearAmountValidity() {
-        amountInput.setCustomValidity("");
-      }
+      // Hiển thị số dư tài khoản ngay khi trang tải xong thành công
+      renderBalance();
 
-      // begin logic
-      const currentUser = requireCurrentUser();
-      if (currentUser) {
-        renderBalance();
-      }
+      amountInput.addEventListener("input", () => {
+        clearFieldValidity(amountInput);
+        clearFieldMessages(amountError);
+      });
 
+      // 4. XỬ LÝ SỰ KIỆN GỬI YÊU CẦU NẠP TIỀN
       form.addEventListener("submit", (event) => {
         event.preventDefault();
 
-        amountError.classList.add("d-none");
-        clearAmountValidity();
+        // Làm sạch trạng thái lỗi cũ trước khi thẩm định dữ liệu mới
+        clearFieldMessages(amountError);
+        clearFieldValidity(amountInput);
 
         const rawValue = amountInput.value.trim();
         const numericValue = Number(rawValue);
 
+        // Kiểm tra tính hợp lệ của số tiền nạp (Phải là số nguyên dương hoặc số thập phân hợp lệ)
         const isValidAmount = rawValue !== "" && Number.isFinite(numericValue) && numericValue > 0 && /^\d+(\.\d+)?$/.test(rawValue);
 
         if (!isValidAmount) {
@@ -193,10 +194,9 @@
           return;
         }
 
-        amountInput.setCustomValidity("");
-
         const latestUser = getCurrentUser();
         if (!latestUser) {
+          alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.");
           window.location.replace("./login.html");
           return;
         }
@@ -206,17 +206,19 @@
           balance: Number(latestUser.balance || 0) + numericValue,
         };
 
+        // Cập nhật vào danh sách toàn bộ người dùng hệ thống công cộng
         const updatedUsers = readUsers().map((user) => {
-          if (user.id === updatedUser.id || user.phone === updatedUser.phone) {
+          if (user.id === updatedUser.id || user.phone === updatedUser.phone || String(user.accountNumber) === String(updatedUser.accountNumber)) {
             return updatedUser;
           }
           return user;
         });
 
         updateStoredUsers(updatedUsers, updatedUser);
+
         renderBalance();
-        amountInput.value = "";
-        clearAmountValidity();
+        form.reset();
+        clearFieldValidity(amountInput);
 
         alert(`Nạp tiền thành công: ${formatMoney(numericValue)}`);
       });

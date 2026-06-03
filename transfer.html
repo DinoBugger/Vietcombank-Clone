@@ -22,6 +22,7 @@
         --bank-green-soft: #d1fae5;
         --bank-surface: rgba(255, 255, 255, 0.9);
         --bank-border: rgba(15, 118, 110, 0.14);
+        --vcb-primary-green: #00703c;
       }
 
       body {
@@ -88,19 +89,12 @@
         letter-spacing: 0.02em;
       }
 
-      .page-title {
-        color: var(--bank-green-deep);
-        font-weight: 800;
-        letter-spacing: -0.03em;
-      }
-
       .balance-card {
         min-width: 250px;
         border-radius: 22px;
         padding: 1.15rem 1.25rem;
         color: #fff;
         background: var(--vcb-primary-green);
-        box-shadow: var(--vcb-btn-shadow);
       }
 
       .balance-label {
@@ -117,15 +111,13 @@
         line-height: 1.1;
       }
 
-      .form-control,
-      .form-select {
+      .form-control {
         border-radius: 14px;
         border-color: rgba(15, 23, 42, 0.12);
         box-shadow: none;
       }
 
-      .form-control:focus,
-      .form-select:focus {
+      .form-control:focus {
         border-color: rgba(15, 118, 110, 0.42);
         box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.08);
       }
@@ -221,7 +213,15 @@
       </main>
     </div>
 
+    <script src="./asset/scripts/util.js"></script>
+
     <script>
+      // =========== PREPARATION
+      const currentUser = requireCurrentUser();
+      if (!currentUser) {
+        throw new Error("Yêu cầu đăng nhập.");
+      }
+
       const balanceEl = document.getElementById("currentBalance");
       const form = document.getElementById("transferForm");
       const elements = form.elements;
@@ -236,13 +236,9 @@
       let checkedRecipientAccount = "";
 
       function renderBalance() {
-        const currentUser = requireCurrentUser();
-        if (!currentUser) {
-          return null;
-        }
-
-        balanceEl.textContent = formatMoney(currentUser.balance);
-        return currentUser;
+        const latestUser = getCurrentUser() || currentUser;
+        balanceEl.textContent = formatMoney(latestUser.balance);
+        return latestUser;
       }
 
       function setRecipientStatus(type, message) {
@@ -260,8 +256,7 @@
       }
 
       function clearErrors() {
-        amountError.classList.add("d-none");
-        balanceError.classList.add("d-none");
+        clearFieldMessages(amountError, balanceError);
       }
 
       function clearRecipientState() {
@@ -273,16 +268,12 @@
         if (!normalizedAccount) {
           return null;
         }
-
         return readUsers().find((user) => String(user.accountNumber) === normalizedAccount) || null;
       }
 
+      // 4. HÀM VALIDATION (XỬ LÝ CHUẨN XÁC THEO FILE UTIL.JS)
       function validateRecipientAccount() {
-        const currentUser = requireCurrentUser();
-        if (!currentUser) {
-          return null;
-        }
-
+        const latestUser = getCurrentUser() || currentUser;
         const accountNumber = recipientInput.value.trim();
         recipientInput.setCustomValidity("");
 
@@ -293,7 +284,7 @@
           return null;
         }
 
-        if (String(accountNumber) === String(currentUser.accountNumber)) {
+        if (String(accountNumber) === String(latestUser.accountNumber)) {
           recipientInput.setCustomValidity("Không thể chuyển tiền cho chính tài khoản của bạn.");
           setRecipientStatus("danger", "Không thể chuyển tiền cho chính tài khoản của bạn.");
           clearRecipientState();
@@ -302,7 +293,6 @@
 
         const recipient = findRecipient(accountNumber);
         if (!recipient) {
-          recipientInput.setCustomValidity("Số tài khoản này không tồn tại.");
           setRecipientStatus("danger", "Số tài khoản này không tồn tại.");
           clearRecipientState();
           return null;
@@ -310,8 +300,7 @@
 
         checkedRecipientAccount = accountNumber;
         recipientInput.setCustomValidity("");
-        setRecipientStatus("success", `Đã kiểm tra: ${recipient.fullname || "Người nhận"}`);
-        showRecipient(recipient);
+        setRecipientStatus("success", `Đã kiểm tra: ${recipient.fullname}`);
         return recipient;
       }
 
@@ -335,13 +324,10 @@
         return transferAmount;
       }
 
-      // begin logic
-      const currentUser = renderBalance();
-      if (currentUser) {
-        clearRecipientState();
-        setRecipientStatus("muted", "Có thể kiểm tra nhanh số tài khoản trước khi chuyển.");
-      }
+      // ======================= BEGIN
+      renderBalance();
 
+      // 5. CÁC SỰ KIỆN LẮNG NGHE (EVENT LISTENERS)
       checkRecipientBtn.addEventListener("click", () => {
         validateRecipientAccount();
         recipientInput.reportValidity();
@@ -363,7 +349,7 @@
       resetBtn.addEventListener("click", () => {
         form.reset();
         clearErrors();
-        clearFieldValidity();
+        clearFieldValidity(recipientInput, amountInput);
         clearRecipientState();
         setRecipientStatus("muted", "Có thể kiểm tra nhanh số tài khoản trước khi chuyển.");
       });
@@ -371,36 +357,38 @@
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         clearErrors();
-        clearFieldValidity();
+        clearFieldValidity(recipientInput, amountInput);
 
-        const latestUser = requireCurrentUser();
+        const latestUser = getCurrentUser();
         if (!latestUser) {
+          alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.");
+          window.location.replace("./login.html");
           return;
         }
 
+        // Kiểm tra số tài khoản người nhận trước
         const recipient = validateRecipientAccount();
+        if (!recipient) {
+          recipientInput.reportValidity();
+          return;
+        }
+
+        // Kiểm tra số tiền chuyển tiếp theo
         const transferAmount = validateTransferAmount(latestUser.balance);
-
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        if (!recipient || transferAmount === null) {
-          form.reportValidity();
-          return;
-        }
-
-        const senderBalance = Number(latestUser.balance || 0);
-        if (senderBalance < transferAmount) {
-          balanceError.classList.remove("d-none");
-          amountInput.setCustomValidity("Số dư không đủ để thực hiện giao dịch.");
+        if (transferAmount === null) {
           amountInput.reportValidity();
+          if (amountInput.validationMessage === "Số dư không đủ để thực hiện giao dịch.") {
+            balanceError.classList.remove("d-none");
+          } else {
+            amountError.classList.remove("d-none");
+          }
           return;
         }
 
+        // Thực hiện cập nhật số dư cho cả người gửi và người nhận
         const users = readUsers();
         const updatedUsers = users.map((user) => {
+          // Trừ tiền người gửi
           if (user.id === latestUser.id || user.phone === latestUser.phone || String(user.accountNumber) === String(latestUser.accountNumber)) {
             return {
               ...user,
@@ -408,6 +396,7 @@
             };
           }
 
+          // Cộng tiền người nhận
           if (String(user.accountNumber) === String(recipient.accountNumber)) {
             return {
               ...user,
@@ -426,14 +415,17 @@
         }
 
         updateStoredUsers(updatedUsers, updatedSender);
-        balanceEl.textContent = formatMoney(updatedSender.balance);
+        renderBalance();
 
         const transferredRecipient = updatedUsers.find((user) => String(user.accountNumber) === String(recipient.accountNumber)) || recipient;
         const recipientName = transferredRecipient.fullname || "Người nhận";
 
+        // Reset form trạng thái ban đầu sau khi thành công
         form.reset();
         clearFieldValidity(recipientInput, amountInput);
         clearRecipientState();
+        setRecipientStatus("muted", "Có thể kiểm tra nhanh số tài khoản trước khi chuyển.");
+
         alert(`Chuyển tiền thành công ${formatMoney(transferAmount)} cho ${recipientName}.`);
       });
     </script>

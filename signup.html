@@ -80,6 +80,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./asset/scripts/util.js"></script>
     <script>
+      // ============== PREPARATION
       const form = document.getElementById("signupForm");
       const elements = form.elements;
       const fullnameInput = elements.fullname;
@@ -94,7 +95,7 @@
       const accountError = document.getElementById("accountError");
       const accountExistsError = document.getElementById("accountExistsError");
 
-      // begin logic
+      // ======================== BEGIN
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -136,12 +137,10 @@
         const accountTaken = users.some((user) => String(user.accountNumber) === String(accountValue));
 
         if (phoneTaken) {
-          phoneInput.setCustomValidity("Số điện thoại này đã được sử dụng");
           phoneExistsError.classList.remove("d-none");
         }
 
         if (accountTaken) {
-          accountInput.setCustomValidity("Số tài khoản này đã tồn tại");
           accountExistsError.classList.remove("d-none");
         }
 

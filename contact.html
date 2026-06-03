@@ -221,16 +221,17 @@
         const messageInput = elements.message;
         const submitButton = form.querySelector("button[type='submit']");
 
+        // Lấy thông số để config mail js
         const emailJsReady = typeof emailjs !== "undefined" && typeof EMAIL_PUBLIC_KEY !== "undefined" && typeof EMAIL_SERVICE_ID !== "undefined" && typeof EMAIL_TEMPLATE_ID !== "undefined";
 
         if (emailJsReady) {
           try {
             emailjs.init(EMAIL_PUBLIC_KEY);
-          } catch (error) {
-            console.warn("⚠️ EmailJS init failed:", error);
+          } catch (err) {
+            console.warn("EmailJS init failed", err);
           }
         } else {
-          console.warn("⚠️ EmailJS config is missing. Check config.js and keys.");
+          console.warn("EmailJS not configured - will fallback to mailto");
         }
 
         form.addEventListener("submit", (e) => {

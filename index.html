@@ -279,7 +279,7 @@
                 <li class="nav-item"><a class="nav-link" href="./news.html">Tin tức</a></li>
                 <li class="nav-item"><a class="nav-link" href="./contact.html">Liên hệ</a></li>
               </ul>
-              <!-- // Chỗ này phải dùng style để gán d-flex do d-flex của bootstrap có !important -->
+
               <div id="authActions" class="auth-actions align-items-center justify-content-center gap-2" style="display: flex">
                 <a class="btn btn-vcb btn-signup" href="./signup.html">Đăng kí</a>
                 <a class="btn btn-vcb btn-login" href="./login.html">Đăng nhập</a>
@@ -347,17 +347,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./asset/scripts/util.js"></script>
     <script>
+      // ================= PREPARATION
+      // Logined User box
       const accountBox = document.getElementById("accountBox");
       const accountName = document.getElementById("accountName");
       const accountBalance = document.getElementById("accountBalance");
+      // 2 nút đăng nhập đăng kí
       const authActions = document.getElementById("authActions");
-      const openAccountCta = document.getElementById("openAccountCta");
       const mobileAuthActions = document.getElementById("mobileAuthActions");
+      // Nút đăng kí ở banner
+      const openAccountCta = document.getElementById("openAccountCta");
+      // 2 loại nút logout
       const logoutButtons = [document.getElementById("logoutBtn"), document.getElementById("mobileLogoutBtn")];
 
       function renderHeaderByAuth() {
         const currentUser = getCurrentUser();
 
+        // Chưa đăng nhập thì hiển thị auth actions
         if (!currentUser) {
           authActions.style.display = "flex";
           openAccountCta?.classList.remove("is-hidden");
@@ -369,7 +375,7 @@
         const fullname = currentUser.fullname || "Khách hàng";
 
         accountName.textContent = `Khách hàng: ${fullname}`;
-        accountBalance.textContent = `Số dư: ${formatBalance(currentUser.balance)}`;
+        accountBalance.textContent = `Số dư: ${formatMoney(currentUser.balance)}`;
 
         authActions.style.display = "none";
         openAccountCta?.classList.add("is-hidden");
@@ -377,7 +383,7 @@
         mobileAuthActions.classList.add("is-visible");
       }
 
-      // begin logic
+      // ======================== BEGIN LOGIC
       renderHeaderByAuth();
 
       logoutButtons.forEach((button) => {

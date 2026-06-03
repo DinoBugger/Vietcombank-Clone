@@ -87,16 +87,15 @@
     <script src="./asset/scripts/util.js"></script>
     <script>
       // begin logic
-      const user = getCurrentUser();
-      if (!user) {
-        window.location.href = "./login.html";
-      } else {
-        document.getElementById("pf-fullname").textContent = user.fullname || "Khách hàng";
-        document.getElementById("pf-phone").textContent = user.phone || "-";
-        document.getElementById("pf-account").textContent = user.accountNumber || "-";
-        document.getElementById("pf-balance").textContent = formatBalance(user.balance);
-        document.getElementById("pf-created").textContent = user.createdAt ? new Date(user.createdAt).toLocaleString() : "-";
+      const currentUser = requireCurrentUser();
+      if (!currentUser) {
+        throw new Error("Yêu cầu đăng nhập.");
       }
+      document.getElementById("pf-fullname").textContent = currentUser.fullname || "Khách hàng";
+      document.getElementById("pf-phone").textContent = currentUser.phone || "-";
+      document.getElementById("pf-account").textContent = currentUser.accountNumber || "-";
+      document.getElementById("pf-balance").textContent = formatMoney(currentUser.balance);
+      document.getElementById("pf-created").textContent = currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleString() : "-";
 
       const logoutBtn = document.getElementById("logoutBtn");
       if (logoutBtn) {
